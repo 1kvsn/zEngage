@@ -2,17 +2,34 @@ import React from 'react';
 import Nav from './Nav';
 import Footer from './Footer';
 import Organization from './Organization';
+import { connect } from 'react-redux';
+
+import Home from './Home';
 
 class Landing extends React.Component {
 	render() {
+		console.log(this.props.currentUser.user, 'in Landing component')
+		const currentUser = this.props.currentUser;
 		return (
 			<>
-				<Nav />
-				<Organization />
-				<Footer />
+				{!currentUser.isAuthInProgress ?
+					(currentUser.user ? <Dashboard /> : <Home />)
+				:	null }
 			</>
 		)
 	}
 }
 
-export default Landing;
+function Dashboard() {
+	return (
+		<React.Fragment>
+			<Nav />
+			<Organization />
+			<Footer />
+		</React.Fragment>
+	)
+}
+
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(Landing);

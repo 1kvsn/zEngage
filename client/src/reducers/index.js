@@ -1,3 +1,19 @@
+/**
+ * store = {
+ *  currentUser: {
+ *    user: { _id, name, email, photo }
+ *  },
+ *  organisations: {
+ *    list: []
+ *  }
+ * }
+ * 
+ */
+
+
+
+/* 
+
 const initState = {
   userId : localStorage.getItem('userId') || '',
   token: localStorage.getItem('token') || '',
@@ -66,3 +82,15 @@ export default function rootReducer(state = initState,action) {
     return state;
   }
 }
+
+*/
+
+
+import { combineReducers } from 'redux';
+
+import currentUser from './currentUser';
+import organisations from './organisations';
+
+const rootReducer = combineReducers({ currentUser, organisations })
+
+export default rootReducer;

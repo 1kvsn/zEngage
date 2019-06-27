@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 
 class OrganizationList extends Component {
   constructor() {
-    super();
-    
+    super(); 
   }
 
   render() {
-    const {orgList} = this.props;
+    const { organisations } = this.props;
+    const orgList = organisations.list;
+
     return (  
       <>
         <div className='org-list-container'>
@@ -18,20 +19,18 @@ class OrganizationList extends Component {
             !orgList.length ? <p>There are no organizations to show.</p> : null
           }
           {
-            orgList && orgList.map(elm => {
+            orgList && orgList.map((elm, i) => {
               return (
-                <>
-                  <div className='icard'>
-                    <div className='icard-image flex'>
-                      <i className="fas fa-users"></i>
-                      <div className='icard-content'>
-                        <Link to={`/users/org/${elm._id}`}>
-                          <div>{elm.name}</div>
-                        </Link>
-                      </div>
+                <div className='icard' key={i}>
+                  <div className='icard-image flex'>
+                    <i className="fas fa-users"></i>
+                    <div className='icard-content'>
+                      <Link to={`/users/org/${elm._id}`}>
+                        <div>{elm.name}</div>
+                      </Link>
                     </div>
                   </div>
-                </>
+                </div>
               )
             })
           }
@@ -43,7 +42,7 @@ class OrganizationList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    orgList: state.orgList
+    organisations: state.organisations
   }
 }
 

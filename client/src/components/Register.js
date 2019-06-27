@@ -1,12 +1,12 @@
-import React from 'react';
-var queryString = require('query-string');
+import React, { Component } from 'react';
+import queryString from 'query-string';
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
-import { registerAction } from '../store/actions/Action';
-import Nav from './Nav';
 
+import { registerAction } from '../actions/Action';
 
-class Register extends React.Component {
+class Register extends Component {
+
 	constructor() {
 		super();
 
@@ -20,6 +20,7 @@ class Register extends React.Component {
 
 	componentDidMount = () => {
 		const {ref} = queryString.parse(location.search);
+		// TODO: convert this into an action.
 		if(ref) {
 			fetch(`http://localhost:8000/api/v1/users/register/verify/${ref}`)
 			.then(res => res.json())
@@ -34,6 +35,16 @@ class Register extends React.Component {
 	}
 
 	handleSubmit =(e)=> {
+		// TODO: add validation for email etc.
+
+		if (this.state.password.length < 6) {
+			return alert('Password needs to be atleast 6 chars.')
+		}
+
+		if (!this.state.name || !this.state.email) {
+			return alert('Please Enter your name and email.')
+		}
+
 		e.preventDefault();
 		this.props.dispatch(registerAction(this.state));
 		this.props.history.push('/users/login')

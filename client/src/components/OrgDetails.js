@@ -3,7 +3,7 @@ import Teammate from './Teammate';
 import {connect} from 'react-redux';
 import Nav from './Nav';
 import OrgFeed from './OrgFeed';
-import {getOrgFeed} from '../store/actions/Action';
+import {getOrgFeed} from '../actions/Action';
 import Footer from './Footer';
 import Posts from './Posts';
 

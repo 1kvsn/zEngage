@@ -2,73 +2,56 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import OrganizationList from './OrganizationList';
-import { getOrgList } from '../store/actions/Action';
+import { getOrganisationsList, createOrganisation } from '../actions/Action';
+
+const initialState = {
+  selectedFile: null,
+  orgName: '',
+  location: ''
+}
 
  class Organization extends Component {
+
   constructor(props) {
-    // console.log('constructor');
     super(props);
-    this.state = {
-      selectedFile: null,
-      orgName: '',
-      location: '',
-      creator: localStorage.getItem('userId')
-    }
+    this.state = initialState
   }
   
   componentDidMount = () => {
-    // console.log('didMount');
-    this.props.dispatch(getOrgList());
+    this.props.dispatch(getOrganisationsList());
   }
 
-  // componentDidUpdate = () => {
-  //   console.log('didUpdate');
-  // }
-  
   onChangeHandler = (e) => {
     this.setState({
-      selectedFile: event.target.files[0],
-      loaded: 0,
+      selectedFile: event.target.files[0]
     });
   }
 
-  changeOrgName = (e) => {
-    this.setState({
-      orgName: e.target.value
-    });
-  }
-
-  handleLocation = (e) => {
-    this.setState({
-      location: e.target.value
-    })
+  changeValue = (e) => {
+    const key = e.target.name;
+    this.state[key] = e.target.value;
+    this.setState(this.state);
   }
 
   onClickHandler = (e) => {
     e.preventDefault();
-    const token = this.props.token;
+    
+    if(!this.state.selectedFile || !this.state.orgName || !this.state.location) {
+      return alert('File, Name and Location are must.');
+    }
+
     const data = new FormData();
     data.append('file', this.state.selectedFile);
     data.append('name', this.state.orgName);
     data.append('location',this.state.location);
     data.append('creator',this.state.creator);
 
-    axios.post("http://localhost:8000/api/v1/users/org", data, { 
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': "bearer " + token
-    }
-    }).then(data => {
-      // console.log(data, 'this is freaking data coming after Axios POST request');
-      this.setState({
-        selectedFile: null,
-        orgName: '',
-        location: '',
-      })
-      this.props.dispatch({
-        type: 'ORGANIZATIONS',
-        payload: data
-      })
+    this.props.dispatch(createOrganisation(data));
+
+    this.setState({
+      selectedFile: null,
+      orgName: '',
+      location: ''
     });
   }
 
@@ -80,11 +63,11 @@ import { getOrgList } from '../store/actions/Action';
           <div className='form-container'>
             <div className="fiv">
               <label className='label'>Create Organization</label>
-              <input className='input' type="text" value={this.state.orgName} onChange={this.changeOrgName} placeholder='org name'/>
+                <input className='input' type="text" value={this.state.orgName} onChange={this.changeValue} name="orgName" placeholder='org name'/>
             </div>
             <div className="fiv">
               {/* <label className='label'>location</label> */}
-              <input className='input' type="text" value={this.state.location} onChange={this.handleLocation} placeholder='location' />
+                <input className='input' type="text" value={this.state.location} onChange={this.changeValue} name="location" placeholder='location' />
             </div>
             <div className="fiv">
               <label className='label'>upload image</label>
@@ -92,7 +75,9 @@ import { getOrgList } from '../store/actions/Action';
             </div>
             {
               this.state.orgName && this.state.location && this.state.selectedFile ? 
-            <button type="submit" className="button bg-primary">Create</button> : null
+                <button type="submit" className="button bg-primary">Create</button>
+                : 
+                null
             }
           </div>
         </form>

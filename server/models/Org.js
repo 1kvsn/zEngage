@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+// TODO: add a field called 'members' -> []
+
 var orgSchema = new Schema({
 	name: {
 		type: String,
@@ -20,6 +22,12 @@ var orgSchema = new Schema({
 	location: {
 		type: String,
 	},
+	members: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+		}
+	]
 }, {timestamps: true})
 
 var Org = mongoose.model('Org', orgSchema);

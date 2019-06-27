@@ -5,32 +5,18 @@ var Teammate = require('../models/Teammate');
 
 var userController = require('../controllers/userController');
 
-router.get('/register/verify/:id', (req, res) => {
-	Teammate.findOne({refCode: req.params.id})
-	.exec()
-	.then(foundTeammate => {
-		if(!foundTeammate) return res.status(500).json({
-			success: false,
-			message: 'Invited User Not Found!'
-		})
-		if(foundTeammate) return res.status(200).json({
-			success: true,
-			foundTeammate
-		});
-	});
-});
-
 //gets list of all existing oranizations
-router.get('/orglist', (req, res) => {
+router.get('/organisations', (req, res) => {
 	// console.log(req.body, 'request coming in OrgList');
-	Org.find().exec().then((err,orgsFound) => {
-		if(err) return res.status(500).json(err);
-		if(!orgsFound) return res.status(200).json({
-			success: true,
-			message: 'There are no organizations to show.'
-		})
-		if(orgsFound) {
-			return res.status(200).json({success:true, orgsFound }); 
+	// TODO: Only send the orgs that the user is a member of 
+	Org.find().then((orgsFound) => {
+		if(!orgsFound) {
+			return res.status(200).json({
+				success: true,
+				message: 'There are no organizations to show.'
+			})
+		} else {
+			return res.status(200).json({ success: true, organisations: orgsFound }); 
 		}
 	})
 })

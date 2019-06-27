@@ -1,6 +1,9 @@
+import axios from 'axios';
+
 const API = "http://localhost:8000/api/v1";
 const token = localStorage.getItem('token');
 const userId = localStorage.getItem('userId')
+
  
 export function registerAction(data) {
   return dispatch => {
@@ -47,17 +50,17 @@ export function loginAction(data, check) {
 	}
 }
 
-export function getOrgList() {
+export function getOrganisationsList() {
 	// console.log("called in action getOrgList");
 	return dispatch => {
-		fetch("http://localhost:8000/api/v1/users/orglist")
+		fetch(`${API}/users/organisations`)
 		.then(res => res.json())
 		.then(data =>	{
-			// console.log(data, 'this is data coming in OrgList Fetch');
+			console.log('orgs', data);
 			dispatch({
-				type: "GET_ORGANIZATIONS",
-				payload: data
-			})
+				type: "GET_ORGANISATIONS_LIST_SUCCESS",
+				data
+			});
 		});
 	}
 }
@@ -118,5 +121,40 @@ export function getOrgFeed(orgId) {
 				payload: data
 			})
 		})
+	}
+}
+
+export function identifyViaToken(token) {
+	return dispatch => {
+		fetch(`${API}/check/token`, {
+      method: "GET",
+      headers: {
+				Authorization: `Bearer ${token}`
+			}})
+		.then(res => res.json())
+		.then(data => {
+			console.log(data, 'data from API');
+			dispatch({
+				type: "ADD_CURRENT_USER",
+				data: data.user
+			})
+		})
+	}
+}
+
+export function createOrganisation(data) {
+	return dispatch => {
+		axios.post("http://localhost:8000/api/v1/users/organisations", data, {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': "bearer " + localStorage.token
+			}
+		}).then(data => {
+			console.log(data, 'in action');
+			dispatch({
+				type: 'GET_ORGANISATIONS_LIST_SUCCESS',
+				data: data.data
+			})
+		});
 	}
 }

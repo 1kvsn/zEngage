@@ -1,15 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Nav from '../components/Nav';
 import Footer from './Footer';
 
-
-class Home extends React.Component {
-	render() {
-		return(
-			<>
+function Home() {
+  return(
+    <>
       <div className='columns is-vcentered home-bg-split-right'>
-				<div className="column parent home-bg-split-left">
+        <div className="column parent home-bg-split-left">
           <div className='child'>
             <div className='flex'>
               <i className="fas fa-search home-icons"></i>
@@ -36,9 +35,8 @@ class Home extends React.Component {
         </div>
       </div>
       <Footer />
-			</>
-		)
-	}
+    </>
+  )
 }
 
 export default Home;

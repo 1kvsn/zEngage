@@ -1,16 +1,16 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const path = require("path");
+
 const port = process.env.PORT || 8000;
+const app = express();
 require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "./server/public")));
 
 app.set("views", path.join(__dirname, "./server/views"));
 app.set("view engine", "ejs");

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../../controllers/userController');
 const orgController = require('../../controllers/orgController');
+var Teammate = require('../../models/Teammate');
 
 var userRouter = require('../user');
 
@@ -22,6 +23,23 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+router.get('/check/token', userController.verifyToken, userController.checkToken);
+
+// TODO: refactor it and place the login in controller.
+router.get('/users/register/verify/:id', (req, res) => {
+	Teammate.findOne({ refCode: req.params.id })
+		.then(foundTeammate => {
+			if (!foundTeammate) return res.status(500).json({
+				success: false,
+				message: 'Invited User Not Found!'
+			})
+			if (foundTeammate) return res.status(200).json({
+				success: true,
+				foundTeammate
+			});
+		});
+});
+
 //Login Form Submit 
 router.post('/users/login', userController.loginUser);
 
@@ -29,7 +47,7 @@ router.post('/users/login', userController.loginUser);
 router.post('/register', userController.registerUser);
 
 //CreateOrg page submit
-router.post('/users/org', userController.verifyToken, upload.single('file'), orgController.createOrg);
+router.post('/users/organisations', userController.verifyToken, upload.single('file'), orgController.createOrg);
 
 //handle Invitation Email Post request
 router.post('/users/org/invite', orgController.sendInvites);

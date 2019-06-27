@@ -5,8 +5,10 @@ var Post = require('../models/Post');
 var User = require('../models/User');
 
 exports.createOrg = (req, res, next) => {
+	// TODO: Add backend validations for name, file, location etc.
+	console.log(req.user, 'in creating organisation');
+
 	Org.findOne({ name: req.body.name })
-	.exec()
 	.then(foundOrg => {
 		// console.log(foundOrg, 'This user already exists in DB.')
 		if (foundOrg) {
@@ -20,7 +22,7 @@ exports.createOrg = (req, res, next) => {
 				const iType = filename.split('.')[1];
 				var newOrg = {
 					name: req.body.name,
-					creator: req.body.creator,
+					creator: req.user.userId,
 					imageUrl: {
 						name: filename,
 						imageType: `image/${iType}`
@@ -31,14 +33,14 @@ exports.createOrg = (req, res, next) => {
 				Org.create(newOrg, (err, createdOrg) => {
 					console.log(createdOrg, err, 'this is createdOrg');
 					if(!err) {
-						Org.find({creator: req.body.creator})
+						Org.find({ creator: req.user.userId})
 						.populate('creator')
 						.exec()
 						.then(foundOrgs => {
 							// console.log(foundOrgs, 'All orgs created by logged in User');
 							if(foundOrgs) return res.status(200).json({
 								success: true,
-								foundOrgs
+								organisations: foundOrgs
 							})
 						})
 					}

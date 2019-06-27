@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+// TODO: maybe change the name from 'teammate' to 'invites'
+
 var teammateSchema = new Schema({
 	name: {
 		type: String,

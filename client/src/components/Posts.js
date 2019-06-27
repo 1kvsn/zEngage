@@ -1,7 +1,7 @@
 import React from 'react';
 import Nav from './Nav';
 import {connect} from 'react-redux';
-import {savePostsAction, getOrgFeed} from './../store/actions/Action';
+import {savePostsAction, getOrgFeed} from '../actions/Action';
 
 //For POST success notification message
 var isPostSuccess = false;

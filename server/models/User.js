@@ -3,6 +3,8 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 12;
 
+// TODO: add a field called 'organisations' -> [], createdOrganisations -> []
+
 var userSchema = new Schema({
 	name: {
 		type: String,

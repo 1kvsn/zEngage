@@ -43,6 +43,14 @@ exports.loginUser = (req, res, next) => {
 exports.registerUser = (req, res) => {
 	// console.log(req.body, 'this is req body in registerUser');
 
+	if (!req.body.name || !req.body.password || !req.body.email) {
+		return res.status(400).send({ message: "Name, Email and Password are mandatory."})
+	}
+
+	if (req.body.password.length < 6) {
+		return res.status(400).send({ message: "Password should be atleast 6 chars." })
+	}
+
 	// TODO: Validation. for email Id, name, password: should be atleast 6 characters.
 
 	User.findOne({email: req.body.email})
@@ -91,10 +99,11 @@ exports.verifyToken = (req, res, next) => {
 	var token = req.headers.authorization.split(' ')[1];
 	// console.log(token, 'thisis verifyToken');
 	jwt.verify(token, 'thisisfreakingawesome', (err, decoded) => {
-		if(err) return res.status(500).json(err);
+		if(err) return res.status(403).json(err);
 		// console.log(decoded, 'this is decoded');
 		if(decoded) {
 			req.headers.user = decoded;
+			req.user = decoded;
 			// console.log(req.headers.user, 'this is headers.user');
 			next();
 		}
@@ -148,4 +157,10 @@ exports.userposts = (req, res) => {
 			})
 		}
 	})
+}
+
+exports.checkToken = (req, res) => {
+	User.findById(req.user.userId).select('-password -email').exec(function(err, user) {
+		return res.json({ user });
+	});
 }

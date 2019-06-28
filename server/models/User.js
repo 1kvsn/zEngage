@@ -3,8 +3,6 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 12;
 
-// TODO: add a field called 'organisations' -> [], createdOrganisations -> []
-
 var userSchema = new Schema({
 	name: {
 		type: String,
@@ -24,10 +22,18 @@ var userSchema = new Schema({
 		required: true,
 		minLength: 6,
 	},
+	organisations: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Org',
+	}],
 	posts: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Post'
-	}]
+	}],
+	createdOrganisations: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Org',
+	}],
 })
 
 userSchema.pre('save', function(next) {

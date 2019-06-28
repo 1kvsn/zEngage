@@ -3,11 +3,7 @@ var Schema = mongoose.Schema;
 
 // TODO: maybe change the name from 'teammate' to 'invites'
 
-var teammateSchema = new Schema({
-	name: {
-		type: String,
-		default: 'aManWithNoName'
-	},
+var memberSchema = new Schema({
 	teammateEmail: {
 		type: String,
 		unique: true,
@@ -20,12 +16,12 @@ var teammateSchema = new Schema({
 		type: String,
 		unique: true,
 	},
-	org: {
+	org: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Org',
-	}
+	}]
 })
 
-var Teammate = mongoose.model('Teammate', teammateSchema);
+var Member = mongoose.model('Member', memberSchema);
 
-module.exports = Teammate;
+module.exports = Member;

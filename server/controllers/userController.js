@@ -1,10 +1,11 @@
-var User = require('../models/User');
 var jwt = require('jsonwebtoken');
-var Teammate = require('../models/Teammate');
-var Post = require('../models/Post');
+
 var Org = require('../models/Org');
+var User = require('../models/User');
+var Post = require('../models/Post');
+var Teammate = require('../models/Teammate');
 
-
+//Login Form Submit 
 exports.loginUser = (req, res, next) => {
 	User.findOne({email: req.body.email}, (err, user) => {
 		if(err) return  res.status(500).json({
@@ -110,6 +111,7 @@ exports.verifyToken = (req, res, next) => {
 	})
 }
 
+//handle Member Post Saver request
 exports.savePosts = (req, res) => {
 	console.log(req.body);
 	//Saving info on new variable to save in DB. The keys matches with Keys in Schema.
@@ -141,6 +143,7 @@ exports.savePosts = (req, res) => {
 	});
 }
 
+//Handle Teammate Posts get request
 exports.userposts = (req, res) => {
 	// console.log('request coming for userPosts');
 	// console.log(req.params);
@@ -163,4 +166,60 @@ exports.checkToken = (req, res) => {
 	User.findById(req.user.userId).select('-password -email').exec(function(err, user) {
 		return res.json({ user });
 	});
+}
+
+exports.getOrganisations = (req, res) => {
+	// TODO: Only send the orgs that the user is a member of 
+	Org.find().then((orgsFound) => {
+		if(!orgsFound) {
+			return res.status(200).json({
+				success: true,
+				message: 'There are no organizations to show.'
+			})
+		} else {
+			return res.status(200).json({ success: true, organisations: orgsFound }); 
+		}
+	})
+}
+
+exports.getOrganisationDetails =  (req, res) => {
+	Org.findOne({_id: req.params.id})
+	.populate('creator')
+	.exec()
+	.then(org => {
+		if(!org) return res.status(500).json({
+			success: false,
+			message: 'Server error'
+		})
+		if(org) {
+			Teammate.find({org: req.params.id})
+			.populate('org')
+			.exec()
+			.then(teammate => {
+				return res.status(200).json({
+					success: true,
+					org,
+					teammate
+				});
+			});
+		}
+	});
+}
+
+// Check the refCode of Invited Member and validate it.
+exports.verifyInvitedMember = (req, res) => {
+	Teammate.findOne({ refCode: req.params.id })
+		.then(foundTeammate => {
+			if (!foundTeammate) {
+				return res.status(500).json({
+					success: false,
+					message: 'Invited User Not Found!'
+				});
+			} else {
+					return res.status(200).json({
+						success: true,
+						foundTeammate
+					});
+				}
+		});
 }

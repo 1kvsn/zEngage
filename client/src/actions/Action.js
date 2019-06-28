@@ -16,7 +16,6 @@ export function registerAction(data) {
 		})
 		.then(res => res.json())
 		.then(data => {
-			console.log(data, 'thisis freaking data from registerAction');
 			dispatch({
       type : "SIGNUP_SUCCESS",
       data
@@ -53,10 +52,14 @@ export function loginAction(data, check) {
 export function getOrganisationsList() {
 	// console.log("called in action getOrgList");
 	return dispatch => {
-		fetch(`${API}/users/organisations`)
+		fetch(`${API}/users/organisations`, {
+      method: "GET",
+      headers: {
+				'Authorization': "bearer " + token,
+			}})
 		.then(res => res.json())
 		.then(data =>	{
-			console.log('orgs', data);
+			console.log(data, 'THIS IS GET_ORGANISATIONS_LIST_SUCCESS');
 			dispatch({
 				type: "GET_ORGANISATIONS_LIST_SUCCESS",
 				data
@@ -77,7 +80,6 @@ export function savePostsAction(data) {
 		})
 		.then(res => res.json())
 		.then(data => {
-			console.log(data, 'thisisdataDATA');
 			dispatch({
 				type: "SAVE_POSTS",
 				payload: data
@@ -104,18 +106,15 @@ export function savePostsAction(data) {
 //get all Posts from an Organization
 export function getOrgFeed(orgId) {
 	return dispatch => {
-		
-		console.log(orgId, 'this is before fetch in OrgFeed');
 		fetch(`http://localhost:8000/api/v1/users/org/${orgId}/posts`, {
       method: "GET",
-      // body: JSON.stringify(''),
       headers: {
 				token: token,
 				userId: userId,
 			}})
 		.then(res => res.json())
 		.then(data => {
-			console.log(data, 'this is data before dispatch in getOrgFeed');
+			
 			dispatch({
 				type: "GET_ORG_FEED",
 				payload: data
@@ -133,7 +132,6 @@ export function identifyViaToken(token) {
 			}})
 		.then(res => res.json())
 		.then(data => {
-			console.log(data, 'data from API');
 			dispatch({
 				type: "ADD_CURRENT_USER",
 				data: data.user
@@ -150,7 +148,6 @@ export function createOrganisation(data) {
 				'Authorization': "bearer " + localStorage.token
 			}
 		}).then(data => {
-			console.log(data, 'in action');
 			dispatch({
 				type: 'GET_ORGANISATIONS_LIST_SUCCESS',
 				data: data.data

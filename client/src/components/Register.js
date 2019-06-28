@@ -34,7 +34,7 @@ class Register extends Component {
 		}
 	}
 
-	handleSubmit =(e)=> {
+	handleSubmit = (e) => {
 		// TODO: add validation for email etc.
 
 		if (this.state.password.length < 6) {
@@ -42,7 +42,7 @@ class Register extends Component {
 		}
 
 		if (!this.state.name || !this.state.email) {
-			return alert('Please Enter your name and email.')
+			return alert('Please enter your name and email.')
 		}
 
 		e.preventDefault();
@@ -54,7 +54,6 @@ class Register extends Component {
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
-		// this.props.history.push('/login');
 	}
 
 
@@ -64,7 +63,6 @@ class Register extends Component {
 			<>
 				<div className="register columns is-desktop is-vcentered home-bg-split-right">
 					<div className="column home-bg-split-left parent">
-						{/* <Nav/> */}
 						<div className='child'>
 							<div className='flex'>
 								<i class="fas fa-search home-icons"></i>

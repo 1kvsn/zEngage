@@ -6,4 +6,3 @@ router.get('*', (err, res) => {
 });
 
 module.exports = router;
-

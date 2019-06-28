@@ -7,10 +7,6 @@ class OrgFeed extends React.Component {
 		super(props);
 	}
 	
-	// componentDidMount = () => {
-	// 	this.props.dispatch(getOrgFeed(orgId));
-	// }
-	
 	render() {
 		return (
 			<>

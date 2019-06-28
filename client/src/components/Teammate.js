@@ -34,7 +34,6 @@ class Teammate extends React.Component {
 				'Authorization': "bearer " + token
 			}
 		}).then(data => {
-			console.log(data, 'this is data on Teammate Invite Axios')
 			this.setState({inviteConfirmMessage: data.data.message})
 		}
 		);

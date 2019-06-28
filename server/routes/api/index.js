@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../../controllers/userController');
-const orgController = require('../../controllers/orgController');
-var Teammate = require('../../models/Teammate');
-
-var userRouter = require('../user');
-
-//handle Image File Upload 
 var multer = require('multer');
 var path = require('path');
+
+const userController = require('../../controllers/userController');
+const orgController = require('../../controllers/orgController');
 var uploadPath = path.join(__dirname, '../..', 'public/uploads');
 
+
+//handle Image File Upload 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, uploadPath)
@@ -25,20 +23,8 @@ var upload = multer({ storage: storage });
 
 router.get('/check/token', userController.verifyToken, userController.checkToken);
 
-// TODO: refactor it and place the login in controller.
-router.get('/users/register/verify/:id', (req, res) => {
-	Teammate.findOne({ refCode: req.params.id })
-		.then(foundTeammate => {
-			if (!foundTeammate) return res.status(500).json({
-				success: false,
-				message: 'Invited User Not Found!'
-			})
-			if (foundTeammate) return res.status(200).json({
-				success: true,
-				foundTeammate
-			});
-		});
-});
+// Check the refCode of Invited Member and validate it.
+router.get('/users/register/verify/:id', userController.verifyInvitedMember);
 
 //Login Form Submit 
 router.post('/users/login', userController.loginUser);
@@ -52,18 +38,22 @@ router.post('/users/organisations', userController.verifyToken, upload.single('f
 //handle Invitation Email Post request
 router.post('/users/org/invite', orgController.sendInvites);
 
-//handle Teammate Post Saver request
+//handle Member Post Saver request
 router.post('/users/posts', userController.verifyToken, userController.savePosts)
 
 //token verify 
 router.get('/users/verify', userController.verifyToken)
 
-//Handle Teammate Posts get request
+//Handle Member Posts get request
 router.get('/users/:id/posts', userController.userposts)
 
 //Handle request for fetching all Org Posts
 router.get('/users/org/:id/posts', orgController.getOrgPosts)
 
-router.use('/users', userRouter);
+//gets list of all oranizations user is part of
+router.get('/users/organisations', userController.verifyToken, userController.getOrganisations)
+
+//get org details page
+router.get('/users/org/:id', userController.getOrganisationDetails);
 
 module.exports = router;

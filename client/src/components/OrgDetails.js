@@ -1,11 +1,12 @@
 import React from 'react';
-import Teammate from './Teammate';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+
 import Nav from './Nav';
-import OrgFeed from './OrgFeed';
-import {getOrgFeed} from '../actions/Action';
-import Footer from './Footer';
 import Posts from './Posts';
+import Footer from './Footer';
+import OrgFeed from './OrgFeed';
+import Teammate from './Teammate';
+import { getOrgFeed } from '../actions/Action';
 
 
 class OrgDetails extends React.Component {
@@ -22,10 +23,8 @@ class OrgDetails extends React.Component {
 		fetch(`http://localhost:8000/api/v1/users/org/${this.props.match.params.id}`)
 		.then(res => res.json())
     .then(data => {
-			// L.log(data.org._id, 'data.ordID in orgDetails Fetch');
 			this.props.dispatch(getOrgFeed(data.org._id));
 			this.setState({org: data.org, teammate: data.teammate});
-			// this.props.dispatch({type: "GET_ORG_ID", payload: data.org})
     })
 	}
 
@@ -81,13 +80,5 @@ class OrgDetails extends React.Component {
 		)
 	}
 }
-
-// export default OrgDetails;
-
-// const mapStateToProps = (state) => {
-// 	return {
-// 		orgDetails: state
-// 	}
-// }
 
 export default connect()(OrgDetails);

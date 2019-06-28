@@ -44,10 +44,7 @@ if (process.env.NODE_ENV === "development") {
  app.use(require("webpack-hot-middleware")(compiler));
 }
 
-
 app.use("/api/v1", require("./server/routes/api"));
-// TODO: Refactor this and move it to api.
-app.use("/users", require("./server/routes/user"));
 
 app.use(require('./server/routes/index'));
 

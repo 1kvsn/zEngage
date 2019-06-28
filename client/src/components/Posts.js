@@ -1,25 +1,23 @@
 import React from 'react';
-import Nav from './Nav';
-import {connect} from 'react-redux';
-import {savePostsAction, getOrgFeed} from '../actions/Action';
+import { connect } from 'react-redux';
+
+import { savePostsAction, getOrgFeed } from '../actions/Action';
 
 //For POST success notification message
 var isPostSuccess = false;
+
+const initialState = {
+	didToday: '',
+	learnedToday: '',
+	orgId: '',
+	tag: '',
+}
 
 
 class Posts extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			didToday: '',
-			learnedToday: '',
-			// userPosts: null, 
-			orgId: '',
-			tag: '',
-			isPostSuccess: false,
-		}
-
+		this.state = {initialState}
 	}
 
 	componentDidMount = () => {
@@ -49,17 +47,12 @@ class Posts extends React.Component {
 	}
 
 	handleSubmit = () => {
-			if(this.state.didToday && this.state.learnedToday && this.state.orgId && this.state.tag) {
-				this.props.dispatch(savePostsAction(this.state));
-				this.setState({
-					didToday: '',
-					learnedToday: '',
-					orgId: '',
-					tag: '',
-				})
-				isPostSuccess = !isPostSuccess;
-				this.props.dispatch(getOrgFeed(this.props.orgId));
-			}
+		if(this.state.didToday && this.state.learnedToday && this.state.orgId && this.state.tag) {
+			this.props.dispatch(savePostsAction(this.state));
+			this.setState(initialState);
+			isPostSuccess = !isPostSuccess;
+			this.props.dispatch(getOrgFeed(this.props.orgId));
+		}
 	}
 
 	render() {

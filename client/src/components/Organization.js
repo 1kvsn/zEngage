@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
+
 import OrganizationList from './OrganizationList';
 import { getOrganisationsList, createOrganisation } from '../actions/Action';
 
@@ -11,7 +11,6 @@ const initialState = {
 }
 
  class Organization extends Component {
-
   constructor(props) {
     super(props);
     this.state = initialState
@@ -47,12 +46,7 @@ const initialState = {
     data.append('creator',this.state.creator);
 
     this.props.dispatch(createOrganisation(data));
-
-    this.setState({
-      selectedFile: null,
-      orgName: '',
-      location: ''
-    });
+    this.setState(initialState);
   }
 
   render() {
@@ -73,12 +67,7 @@ const initialState = {
               <label className='label'>upload image</label>
               <input className='input' name="file" onChange={this.onChangeHandler}  type="file"/>
             </div>
-            {
-              this.state.orgName && this.state.location && this.state.selectedFile ? 
-                <button type="submit" className="button bg-primary">Create</button>
-                : 
-                null
-            }
+            <button type="submit" className="button bg-primary">Create</button>
           </div>
         </form>
         <div className='organization-list'>

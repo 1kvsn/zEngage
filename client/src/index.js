@@ -9,8 +9,6 @@ import rootReducer from './reducers';
 
 
 const composeEnchancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; 
-
-// TODO: Learn about createStore in redux.
 const store = createStore(rootReducer, composeEnchancers(applyMiddleware(thunk)));
 
 ReactDOM.render(

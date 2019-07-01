@@ -5,7 +5,7 @@ import Nav from './Nav';
 import Posts from './Posts';
 import Footer from './Footer';
 import OrgFeed from './OrgFeed';
-import Teammate from './Teammate';
+import Teammate from './Member';
 import { getOrgFeed } from '../actions/Action';
 
 

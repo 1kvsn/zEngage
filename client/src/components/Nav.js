@@ -23,7 +23,7 @@ class Nav extends React.Component {
                 <li className='navbar-end'>
                   <p className='nav-username'>Hello! {user.name}</p>
                   <a className="log-out-button" onClick={this.handleClick}>
-                    <i class="fas fa-sign-out-alt"></i>
+                    <i className="fas fa-sign-out-alt"></i>
                   </a>
                 </li>
               </ul>

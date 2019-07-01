@@ -19,7 +19,7 @@ class OrgFeed extends React.Component {
 								<div className='post'>
 									<div className='post-head'>
 										<span>
-											<i class="fas fa-user-circle"></i>
+											<i className="fas fa-user-circle"></i>
 											<p className='post-username'>{post.user.name}</p>
 										</span>
 										<div className='post-time'>

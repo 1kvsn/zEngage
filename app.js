@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, "./server/public")));
 app.set("views", path.join(__dirname, "./server/views"));
 app.set("view engine", "ejs");
 
-console.time('start')
+console.time('start');
 mongoose.connect(
  "mongodb://127.0.0.1:27017/altTrack", {
    connectTimeoutMS: 1000 * 60 * 5,

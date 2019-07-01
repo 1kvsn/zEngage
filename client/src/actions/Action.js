@@ -24,6 +24,20 @@ export function registerAction(data) {
   }
 }
 
+export function inviteeRegisterAction(ref) {
+	return dispatch => {
+		fetch(`http://localhost:8000/api/v1/users/register/verify/${ref}`)
+		.then(res => res.json())
+		.then(({foundTeammate: {teammateEmail}}) => {
+			this.setState(state => ({
+				...state,
+				email: teammateEmail,
+				isInvited: true,
+			}))
+		})
+	}
+}
+
 export function loginAction(data, check) {
   return dispatch => {
     fetch(`${API}/users/login`, {
@@ -59,7 +73,7 @@ export function getOrganisationsList() {
 			}})
 		.then(res => res.json())
 		.then(data =>	{
-			console.log(data, 'THIS IS GET_ORGANISATIONS_LIST_SUCCESS');
+			// console.log(data, 'THIS IS GET_ORGANISATIONS_LIST_SUCCESS');
 			dispatch({
 				type: "GET_ORGANISATIONS_LIST_SUCCESS",
 				data
@@ -148,6 +162,7 @@ export function createOrganisation(data) {
 				'Authorization': "bearer " + localStorage.token
 			}
 		}).then(data => {
+			console.log(data, 'this is freaking data before GET_ORG_LIST_SUCCESS');
 			dispatch({
 				type: 'GET_ORGANISATIONS_LIST_SUCCESS',
 				data: data.data

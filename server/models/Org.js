@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// TODO: add a field called 'members' -> []
-
 var orgSchema = new Schema({
 	name: {
 		type: String,

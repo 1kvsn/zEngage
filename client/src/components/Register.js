@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
+import validator from "email-validator";
 
-import { registerAction } from '../actions/Action';
+
+import { registerAction, inviteeRegisterAction } from '../actions/Action';
 
 class Register extends Component {
 
@@ -20,22 +22,15 @@ class Register extends Component {
 
 	componentDidMount = () => {
 		const {ref} = queryString.parse(location.search);
-		// TODO: convert this into an action.
 		if(ref) {
-			fetch(`http://localhost:8000/api/v1/users/register/verify/${ref}`)
-			.then(res => res.json())
-			.then(({foundTeammate: {teammateEmail}}) => {
-				this.setState(state => ({
-					...state,
-					email: teammateEmail,
-					isInvited: true,
-				}))
-			})
+			inviteeRegisterAction(ref);
 		}
 	}
 
 	handleSubmit = (e) => {
-		// TODO: add validation for email etc.
+		if(!validator.validate(this.state.email)) {
+			return alert('Please check your email address and try again.')
+		}
 
 		if (this.state.password.length < 6) {
 			return alert('Password needs to be atleast 6 chars.')
@@ -57,7 +52,6 @@ class Register extends Component {
 	}
 
 
-
 	render() {
 		return(
 			<>
@@ -65,15 +59,15 @@ class Register extends Component {
 					<div className="column home-bg-split-left parent">
 						<div className='child'>
 							<div className='flex'>
-								<i class="fas fa-search home-icons"></i>
+								<i className="fas fa-search home-icons"></i>
 								<p className='home-text-left'>Create your organization.</p>
 							</div>
 							<div className='flex'>
-								<i class="fas fa-users home-icons"></i>
+								<i className="fas fa-users home-icons"></i>
 								<p className='home-text-left'>Add teams and invite teammates.</p>
 							</div>
 							<div className='flex'>
-								<i class="fas fa-crosshairs home-icons"></i>
+								<i className="fas fa-crosshairs home-icons"></i>
 								<p className='home-text-left'>Keep track of your team's progress.</p>
 							</div>
 						</div>
@@ -83,27 +77,27 @@ class Register extends Component {
 
 							<div className="field">
 								<label className='label'>name:</label>
-								<p class="control has-icons-left has-icons-right">
+								<p className="control has-icons-left has-icons-right">
 									<input className='input' value={this.state.name} onChange={(e) => this.handleChange(e)} type="text" name="name" placeholder="e.g Alex Smith"/>
-									<span class="icon is-small is-left">
-										<i class="fas fa-user"></i>
+									<span className="icon is-small is-left">
+										<i className="fas fa-user"></i>
 									</span>
-									<span class="icon is-small is-right">
-										<i class="fas fa-check"></i>
+									<span className="icon is-small is-right">
+										<i className="fas fa-check"></i>
 									</span>
 								</p>
 							</div>
 
 							<div className="field">
 								<label className='label'>email:</label>
-								<p class="control has-icons-left has-icons-right">
+								<p className="control has-icons-left has-icons-right">
 
 									<input className='input' disabled={this.state.isInvited} value={this.state.email || ''} onChange={(e) => this.handleChange(e)} type="email" name="email" placeholder="e.g. alexsmith@gmail.com" />
-									<span class="icon is-small is-left">
-										<i class="fas fa-envelope"></i>
+									<span className="icon is-small is-left">
+										<i className="fas fa-envelope"></i>
 									</span>
-									<span class="icon is-small is-left">
-										<i class="fas fa-envelope"></i>
+									<span className="icon is-small is-left">
+										<i className="fas fa-envelope"></i>
 									</span>
 								</p>
 							</div>

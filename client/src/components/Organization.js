@@ -39,6 +39,15 @@ const initialState = {
       return alert('File, Name and Location are must.');
     }
 
+    // if(!this.state.selectedFile.name.endsWith('.png') || !this.state.selectedFile.name.endsWith('.jpeg') || !this.state.selectedFile.name.endsWith('.jpg')) {
+    //   console.log(this.state.selectedFile, 'thisisselectedFile');
+    //   return alert("Image format must be .jpg, .jpeg, or .png.");
+    // }
+
+    if(this.state.selectedFile.size >= 10000000/2) {
+      return alert('Image file size must be below 5MB');
+    }
+
     const data = new FormData();
     data.append('file', this.state.selectedFile);
     data.append('name', this.state.orgName);

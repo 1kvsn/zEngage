@@ -17,7 +17,7 @@ const initialState = {
 class Posts extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {initialState}
+		this.state = {initialState};
 	}
 
 	componentDidMount = () => {
@@ -108,7 +108,7 @@ class Posts extends React.Component {
 							userPosts.map(post => {
 								return (
 									<div className='post'>
-										<div class='post-time'>
+										<div className='post-time'>
 											<p>{new Date(post.createdAt).toLocaleTimeString()}</p>
 											<p>on {new Date(post.createdAt).toDateString()}</p>
 										</div>

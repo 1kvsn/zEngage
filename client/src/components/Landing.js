@@ -8,7 +8,6 @@ import Home from './Home';
 
 class Landing extends React.Component {
 	render() {
-		console.log(this.props.currentUser.user, 'in Landing component')
 		const currentUser = this.props.currentUser;
 		return (
 			<>

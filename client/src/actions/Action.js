@@ -6,7 +6,7 @@ const userId = localStorage.getItem('userId')
 
  
 export function registerAction(data) {
-  return dispatch => {
+  return (dispatch) => {
     fetch(`${API}/register`, {
 			method: 'POST',
 			headers: {
@@ -25,21 +25,21 @@ export function registerAction(data) {
 }
 
 export function inviteeRegisterAction(ref) {
-	return dispatch => {
-		fetch(`http://localhost:8000/api/v1/users/register/verify/${ref}`)
+	return (dispatch) => new Promise((resolve, reject) => {
+		fetch(`${API}/users/register/verify/${ref}`)
 		.then(res => res.json())
-		.then(({foundTeammate: {teammateEmail}}) => {
-			this.setState(state => ({
-				...state,
-				email: teammateEmail,
-				isInvited: true,
-			}))
+		.then(data => {
+			dispatch({
+				type: "VERIFY_INVITEE",
+				data
+			})
+			resolve(data);
 		})
-	}
+	})
 }
 
 export function loginAction(data, check) {
-  return dispatch => {
+  return (dispatch) => {
     fetch(`${API}/users/login`, {
 			method: 'POST',
 			headers: {
@@ -65,7 +65,7 @@ export function loginAction(data, check) {
 
 export function getOrganisationsList() {
 	// console.log("called in action getOrgList");
-	return dispatch => {
+	return (dispatch) => {
 		fetch(`${API}/users/organisations`, {
       method: "GET",
       headers: {
@@ -119,7 +119,8 @@ export function savePostsAction(data) {
 
 //get all Posts from an Organization
 export function getOrgFeed(orgId) {
-	return dispatch => {
+	console.log('this is in reducer', orgId);
+	return (dispatch) => {
 		fetch(`http://localhost:8000/api/v1/users/org/${orgId}/posts`, {
       method: "GET",
       headers: {
@@ -128,9 +129,9 @@ export function getOrgFeed(orgId) {
 			}})
 		.then(res => res.json())
 		.then(data => {
-			
+			console.log('This is getOrgFEED from reducer', data);
 			dispatch({
-				type: "GET_ORG_FEED",
+				type: "GET_ORGANISATION_FEED",
 				payload: data
 			})
 		})
@@ -138,7 +139,7 @@ export function getOrgFeed(orgId) {
 }
 
 export function identifyViaToken(token) {
-	return dispatch => {
+	return (dispatch) => {
 		fetch(`${API}/check/token`, {
       method: "GET",
       headers: {
@@ -155,7 +156,7 @@ export function identifyViaToken(token) {
 }
 
 export function createOrganisation(data) {
-	return dispatch => {
+	return (dispatch) => {
 		axios.post("http://localhost:8000/api/v1/users/organisations", data, {
 			headers: {
 				'Content-Type': 'application/json',

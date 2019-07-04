@@ -23,7 +23,7 @@ var upload = multer({ storage: storage });
 router.get('/check/token', userController.verifyToken, userController.checkToken);
 
 // Check the refCode of Invited Member and validate it.
-router.get('/users/register/verify/:id', userController.verifyInvitedMember);
+router.get('/users/register/verify/:id', userController.verifyInvitee);
 
 //Login Form Submit 
 router.post('/users/login', userController.loginUser);

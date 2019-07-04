@@ -8,7 +8,6 @@ import validator from "email-validator";
 import { registerAction, inviteeRegisterAction } from '../actions/Action';
 
 class Register extends Component {
-
 	constructor() {
 		super();
 
@@ -17,28 +16,47 @@ class Register extends Component {
 			email: '',
 			password: '',
 			isInvited: false,
+			refCode: '',
 		}
 	}
 
 	componentDidMount = () => {
 		const {ref} = queryString.parse(location.search);
 		if(ref) {
-			inviteeRegisterAction(ref);
+			this.setState({
+				refCode: ref,
+				isInvited: true,
+			});
+			this.getInviteeInfo(ref);
 		}
+	}
+	
+	getInviteeInfo = (ref) => {
+		this.props.dispatch(inviteeRegisterAction(ref)).then(res => {
+			this.setState({email: res.invitee.teammateEmail})
+		});
+
 	}
 
 	handleSubmit = (e) => {
-		if(!validator.validate(this.state.email)) {
-			return alert('Please check your email address and try again.')
+		if(this.state.refCode) {
+
+			if (this.state.password.length < 6) {
+				return alert('Password needs to be atleast 6 chars.')
+			}
+			if (!this.state.name) {
+				return alert('Please enter your name.')
+			}
+		} else {
+
+			if(!validator.validate(this.state.email)) {
+				return alert('Please check your email address and try again.')
+			}
+			if (!this.state.name || !this.state.email) {
+				return alert('Please enter your name and email.')
+			}
 		}
 
-		if (this.state.password.length < 6) {
-			return alert('Password needs to be atleast 6 chars.')
-		}
-
-		if (!this.state.name || !this.state.email) {
-			return alert('Please enter your name and email.')
-		}
 
 		e.preventDefault();
 		this.props.dispatch(registerAction(this.state));
@@ -92,7 +110,7 @@ class Register extends Component {
 								<label className='label'>email:</label>
 								<p className="control has-icons-left has-icons-right">
 
-									<input className='input' disabled={this.state.isInvited} value={this.state.email || ''} onChange={(e) => this.handleChange(e)} type="email" name="email" placeholder="e.g. alexsmith@gmail.com" />
+									<input className='input' disabled={this.props.invitee.isInvited} value={this.state.refCode ? this.props.invitee.teammateEmail : this.state.email } onChange={(e) => this.handleChange(e)} type="email" name="email" placeholder="e.g. alexsmith@gmail.com" />
 									<span className="icon is-small is-left">
 										<i className="fas fa-envelope"></i>
 									</span>
@@ -106,10 +124,7 @@ class Register extends Component {
 								<label className='label'>password:</label>
 								<input className='input' value={this.state.password} onChange={(e) => this.handleChange(e)} type="password" name="password" placeholder='minimum 6 digits'/>
 							</div>
-							{
-								this.state.name && this.state.email && this.state.password ? 
-								<button className="button bg-primary" type="submit">Signup</button> : null
-							}
+							<button className="button bg-primary" type="submit">Signup</button>
 							<p className='flex register-login-text'>
 								Already have an account?
 								<Link to="/users/login">
@@ -126,7 +141,8 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		userData : state.data
+		userData : state.data,
+		invitee: state.invitee
 	}
 }
 

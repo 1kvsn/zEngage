@@ -3,7 +3,8 @@ var jwt = require('jsonwebtoken');
 var Org = require('../models/Org');
 var User = require('../models/User');
 var Post = require('../models/Post');
-var Member = require('../models/Member');
+var Invite = require('../models/Invite');
+var utils = require('../utils/index')
 
 //Login Form Submit 
 exports.loginUser = (req, res, next) => {
@@ -48,6 +49,7 @@ exports.loginUser = (req, res, next) => {
 }
 
 exports.registerUser = (req, res) => {
+	console.log(req.body, 'this is req body');
 	if (!req.body.name || !req.body.password || !req.body.email) {
 		return res.status(400).send({ message: "Name, Email and Password are mandatory."})
 	}
@@ -56,12 +58,7 @@ exports.registerUser = (req, res) => {
 		return res.status(400).send({ message: "Password should be atleast 6 chars." })
 	}
 
-	function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-	}
-
-	if(!validateEmail(req.body.email)) {
+	if(!utils.validateEmail(req.body.email)) {
 		return res.status(400).send({ message: "Please check your email address and try again."})
 	}
 
@@ -87,7 +84,7 @@ exports.registerUser = (req, res) => {
 				} 
 				
 				if(user && req.body.isInvited) {
-					Member.findOneAndUpdate({teammateEmail: req.body.email}, {isVerified: req.body.isInvited}, (err, updatedTeammate) => {
+					Invite.findOneAndUpdate({teammateEmail: req.body.email}, {isVerified: req.body.isInvited}, (err, updatedTeammate) => {
 						if(err) return res.status(500).json({
 							success: false,
 							message: 'Unable to update the invited Teammate!'
@@ -123,6 +120,9 @@ exports.verifyToken = (req, res, next) => {
 exports.savePosts = (req, res) => {
 	console.log(req.body);
 	//Saving info on new variable to save in DB. The keys matches with Keys in Schema.
+
+	// TODO: addValidation 
+
 	var newPost = {
 		didToday: req.body.didToday,
 		learnedToday: req.body.learnedToday,
@@ -189,35 +189,21 @@ exports.getOrganisations = (req, res) => {
 				message: 'There are no organizations to show.'
 			});
 		} else {
-			console.log(orgsFound, 'this is orgsFound in GET_ORGANISATIONS');
-				return res.status(200).json({
-					success: true,
-					organisations: orgsFound
-				});
-			}
+			return res.status(200).json({
+				success: true,
+				organisations: orgsFound
+			});
+		}
 	});
-
-	// Org.find().then((orgsFound) => {
-	// 	if(!orgsFound) {
-	// 		return res.status(200).json({
-	// 			success: true,
-	// 			message: 'There are no organizations to show.'
-	// 		})
-	// 	} else {
-	// 		return res.status(200).json({ 
-	// 			success: true,
-	// 			organisations: orgsFound 
-	// 		});
-	// 	}
-	// });
 }
 
+// TODO: remove Member.find. Instead populate members from org.
 exports.getOrganisationDetails =  (req, res) => {
 	Org.findOne({_id: req.params.id})
 	.populate('creator')
 	.then(org => {
 		if(org) {
-			Member.find({org: req.params.id})
+			Invite.find({org: req.params.id})
 			.populate('org')
 			.then(teammate => {
 				return res.status(200).json({
@@ -227,28 +213,28 @@ exports.getOrganisationDetails =  (req, res) => {
 				});
 			});
 		} else {
-				return res.status(500).json({
-				success: false,
-				message: 'Server error'
-				});
-			}
+			return res.status(500).json({
+			success: false,
+			message: 'Server error'
+			});
+		}
 	});
 }
 
 // Check the refCode of Invited Member and validate it.
-exports.verifyInvitedMember = (req, res) => {
-	Member.findOne({ refCode: req.params.id })
-	.then(foundTeammate => {
-		if (!foundTeammate) {
+exports.verifyInvitee = (req, res) => {
+	Invite.findOne({ refCode: req.params.id })
+	.then(invitee => {
+		if (!invitee) {
 			return res.status(500).json({
 				success: false,
-				message: 'Invited User Not Found!'
+				message: 'Invitee Not Found!'
 			});
 		} else {
-				return res.status(200).json({
-					success: true,
-					foundTeammate
-				});
-			}
+			return res.status(200).json({
+				success: true,
+				invitee
+			});
+		}
 	});
 }

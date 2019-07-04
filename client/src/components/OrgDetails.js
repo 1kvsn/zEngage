@@ -5,7 +5,7 @@ import Nav from './Nav';
 import Posts from './Posts';
 import Footer from './Footer';
 import OrgFeed from './OrgFeed';
-import Teammate from './Member';
+import Invite from './Invite';
 import { getOrgFeed } from '../actions/Action';
 
 
@@ -13,12 +13,14 @@ class OrgDetails extends React.Component {
 	constructor(props){
 		super(props);
 
+		// TODO: Save it in store.
 		this.state = {
 			org: null,
 			teammate: '',
 		}
 	}
 
+	// TODO: Convert this into actioncreator
 	componentDidMount = () => {
 		fetch(`http://localhost:8000/api/v1/users/org/${this.props.match.params.id}`)
 		.then(res => res.json())
@@ -67,7 +69,7 @@ class OrgDetails extends React.Component {
 										<p>{teammate.teammateEmail}</p>)	
 									}
 							</div>
-							<Teammate data={this.state.org}/>
+							<Invite data={this.state.org}/>
 						</div>
 						<div className='feed-container'>
 							<Posts data={this.state.org}/>

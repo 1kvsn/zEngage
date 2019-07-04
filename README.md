@@ -2,6 +2,10 @@
 
 This is a fullstack project built using React-Redux for frontend, Express.js for server and Mongoose.js, MongoDB for database.
 
+## Dependency
+MongoDB >= 4.0
+NodeJS >= 11.0
+
 ## Project Features
 
 1. User can register for an account and login.

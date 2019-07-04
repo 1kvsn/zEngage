@@ -22,6 +22,7 @@ class Login extends React.Component {
 		);
 	}
 
+
 	handleChange = (e) => {
 		this.setState({
 			[e.target.name]: e.target.value,
@@ -69,10 +70,7 @@ class Login extends React.Component {
 								<label className='label' >password</label>
 								<input className='input' value={this.state.password} onChange={(e) => this.handleChange(e)} name='password' type='password' autoComplete='current-password' />
 							</div>
-							{
-								this.state.email && this.state.password ? 
-								<button className="button bg-primary" type='submit'>Log in</button> : null
-							}
+							<button className="button bg-primary" type='submit'>Log in</button>
 							<div className='flex register-login-text'>Don't have account?
 								<Link to="/users/register">
 									<p>Sign up</p>

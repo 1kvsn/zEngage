@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-class Teammate extends React.Component {
+class Invite extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -68,4 +68,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(Teammate);
+export default connect(mapStateToProps)(Invite);

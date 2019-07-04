@@ -1,9 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// TODO: maybe change the name from 'teammate' to 'invites'
-
-var memberSchema = new Schema({
+var inviteSchema = new Schema({
 	teammateEmail: {
 		type: String,
 		unique: true,
@@ -22,6 +20,6 @@ var memberSchema = new Schema({
 	}]
 })
 
-var Member = mongoose.model('Member', memberSchema);
+var Invite = mongoose.model('Invite', inviteSchema);
 
-module.exports = Member;
+module.exports = Invite;

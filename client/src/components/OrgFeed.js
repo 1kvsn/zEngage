@@ -41,7 +41,6 @@ class OrgFeed extends React.Component {
 						})	
 					}	
 				</section>
-
 			</>
 		)
 	}
@@ -49,8 +48,8 @@ class OrgFeed extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		orgId: state.orgId || '',
-		orgPosts: state.orgFeed || [],
+		orgId: state.organisations.orgId || '',
+		orgPosts: state.organisations.orgFeed || [],
 	}
 }
 

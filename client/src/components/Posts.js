@@ -17,7 +17,7 @@ const initialState = {
 class Posts extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {initialState};
+		this.state = {initialState}
 	}
 
 	componentDidMount = () => {
@@ -51,7 +51,8 @@ class Posts extends React.Component {
 			this.props.dispatch(savePostsAction(this.state));
 			this.setState(initialState);
 			isPostSuccess = !isPostSuccess;
-			this.props.dispatch(getOrgFeed(this.props.orgId));
+			console.log('this is orgId', this.props.data._id);
+			this.props.dispatch(getOrgFeed(this.props.data._id));
 		}
 	}
 

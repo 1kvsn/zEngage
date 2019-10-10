@@ -28,7 +28,7 @@ function Home() {
         <div className="column parent ">
           <div className='is-half child '>
             <p className='has-text-weight-semibold home-text-right'>See what's happenning in your organization right now</p>
-            <p className='has-text-weight-bold home-text-right join'>Join Altify today.</p>
+            <p className='has-text-weight-bold home-text-right join'>Join zEngage today.</p>
             <Link to="/users/login" className="button">Login</Link>
             <Link to="/users/register" className="button bg-primary">Sign up</Link>
           </div>

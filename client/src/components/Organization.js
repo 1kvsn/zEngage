@@ -35,9 +35,9 @@ const initialState = {
   onClickHandler = (e) => {
     e.preventDefault();
     
-    if(!this.state.selectedFile || !this.state.orgName || !this.state.location) {
-      return alert('File, Name and Location are must.');
-    }
+    // if(!this.state.selectedFile || !this.state.orgName || !this.state.location) {
+    //   return alert('File, Name and Location are must.');
+    // }
 
     // if(!this.state.selectedFile.name.endsWith('.png') || !this.state.selectedFile.name.endsWith('.jpeg') || !this.state.selectedFile.name.endsWith('.jpg')) {
     //   console.log(this.state.selectedFile, 'thisisselectedFile');

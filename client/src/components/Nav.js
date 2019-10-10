@@ -18,7 +18,7 @@ class Nav extends React.Component {
             <div>
               <ul className="navbar">
                 <li className='navbar-start'>
-                  <Link to="/" ><p className='logo-name'>altify</p></Link>
+                  <Link to="/" ><p className='logo-name'>zEngage</p></Link>
                 </li>
                 <li className='navbar-end'>
                   <p className='nav-username'>Hello! {user.name}</p>

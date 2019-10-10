@@ -138,8 +138,8 @@ exports.sendInvites = (req, res) => {
 						//send email for validation
 						mailOptions = {
 							to: teammateEmail,
-							subject: "You've been invited to join altify organization",
-							html: `Hello, <br>You've been invited to join an organization on altify.<br><br>Please <a href='${link}'>click here</a> to join.<br><br>Regards,<br>altify`
+							subject: "You've been invited to join an organization on zEngage",
+							html: `Hello, <br>You've been invited to join an organization on zEngage.<br><br>Please <a href='${link}'>click here</a> to join.<br><br>Regards,<br>zEngage`
 						}
 						smtpTransport.sendMail(mailOptions, (err, info) => {
 							if (err) return res.status(406).json({ error: "Encountered a problem while sending the invitation email" });

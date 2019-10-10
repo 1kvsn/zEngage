@@ -2,10 +2,14 @@ body {
 	background-color: #e6ecf0;
 }
 
+:root {
+  --primary-color: rgb(78, 49, 50);
+}
+
 //Homepage styles
 
 .home-bg-split-left {
-	background-color: #F4494B;
+	background-color: var(--primary-color);
 	height: 100vh;
 
 }
@@ -20,7 +24,7 @@ body {
 }
 
 .bg-primary {
-	background-color: #F4494B !important;
+	background-color: var(--primary-color) !important;
 	color: #fff !important;
 }
 
@@ -144,7 +148,7 @@ body {
 //Org Details page
 .notification-text {
 	background-color: #fff;
-	color: #F4494B;
+	color: var(--primary-color);
 	text-align: center;
 }
 
@@ -208,7 +212,7 @@ body {
 //nav bar styles
 .navbar {
 	// vertical-align: baseline !important;
-	background-color: #F4494B !important;
+	background-color: var(--primary-color) !important;
 
 	.nav-username {
 		color: #fff;
@@ -295,7 +299,7 @@ body {
 	position: fixed;
 	width: 100%;
 	bottom: 0;
-	border-top: 0.5px solid #F4494B;
+	border-top: 0.5px solid var(--primary-color);
 	padding: 10px;
 	background-color: #fff;
 	
@@ -308,7 +312,7 @@ body {
 			text-decoration: none;
 			font-size: 18px;
 			margin: 10px;
-			color: #F4494B;
+			color: var(--primary-color);
 		}
 	}
 }

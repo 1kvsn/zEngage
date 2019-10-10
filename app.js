@@ -7,7 +7,6 @@ const port = process.env.PORT || 8000;
 const app = express();
 require('dotenv').config();
 
-
 app.use(express.static(path.join(__dirname, "./server/public")));
 
 app.use(bodyParser.json());

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { loginAction } from '../actions/Action';
 
-const API = 'http://localhost:8000/api/v1';
 
 class Login extends React.Component {
-	constructor() {
-		super();
-
+	constructor(props) {
+		super(props);
 		this.state = {
 			email: '',
 			password: '',
@@ -15,23 +15,13 @@ class Login extends React.Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		let data = this.state;
-		console.log(data, 'before fetch in Login');
-		fetch(`${API}/users/login`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data)
+		this.props.dispatch(loginAction(this.state, () => {
+			localStorage.getItem('token') ? 
+			this.props.history.push("/landing") : this.props.history.push('/users/login');
 		})
-		.then(res => res.json())
-		.then(data => {
-			console.log(data);
-			if(data.success) {
-				this.props.history.push('/')
-			}
-		});
+		);
 	}
+
 
 	handleChange = (e) => {
 		this.setState({
@@ -40,26 +30,66 @@ class Login extends React.Component {
 	}
 
 	render() {
+
 		return (
 			<>
-				<form className="form__login ui form" onSubmit={(e) => this.handleSubmit(e)}>
-				<div className="five wide field">
-					<label>email</label>
-					<input value={this.state.email} onChange={(e) => this.handleChange(e)} name='email' type='email' placeholder='email'></input>
+				<div className="columns is-desktop is-vcentered home-bg-split-right">
+					<div className="column home-bg-split-left parent">
+						<div className='child'>
+							<div className='flex'>
+								<i className="fas fa-search home-icons"></i>
+								<p className='home-text-left'>Create your organization.</p>
+							</div>
+							<div className='flex'>
+								<i className="fas fa-users home-icons"></i>
+								<p className='home-text-left'>Add teams and invite teammates.</p>
+							</div>
+							<div className='flex'>
+								<i className="fas fa-crosshairs home-icons"></i>
+								<p className='home-text-left'>Keep track of your team's progress.</p>
+							</div>
+						</div>
+					</div>
+					<form className="form column" onSubmit={(e) => this.handleSubmit(e)}>
+						<div className='column is-half is-vcentered'>
+
+							<div className="field">
+								<label className='label'>email</label>
+								<p className="control has-icons-left has-icons-right">
+									<input className='input' value={this.state.email} onChange={(e) => this.handleChange(e)} name='email' type='email' placeholder='e.g alexsmith@gmail.com' autoComplete='email'/>
+									<span className="icon is-small is-left">
+										<i className="fas fa-envelope"></i>
+									</span>
+									<span className="icon is-small is-left">
+										<i className="fas fa-envelope"></i>
+									</span>
+								</p>
+							</div>
+								
+							<div className="field">
+								<label className='label' >password</label>
+								<input className='input' value={this.state.password} onChange={(e) => this.handleChange(e)} name='password' type='password' autoComplete='current-password' />
+							</div>
+							<button className="button bg-primary" type='submit'>Log in</button>
+							<div className='flex register-login-text'>Don't have account?
+								<Link to="/users/register">
+									<p>Sign up</p>
+								</Link>
+							</div>
+						</div>
+					</form>
 				</div>
-					
-				<div className="five wide field">
-					<label>password</label>
-					<input value={this.state.password} onChange={(e) => this.handleChange(e)} name='password' type='password' placeholder='password'></input>
-				</div>
-					
-					<button className="ui button" type='submit'>Log in</button>
-				</form>
 			</>
 		)
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		token : state.token
+	}
+}
 
-export default Login;
+
+export default connect(mapStateToProps)(Login);
 
 

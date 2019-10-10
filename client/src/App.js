@@ -1,38 +1,51 @@
 import React, { Component } from 'react';
-import './App.scss';
-import Login from './components/Login';
-import Register from './components/Register';
 import {
   BrowserRouter as Router,
   Route, Switch
 } from 'react-router-dom';
-import Nav from './components/Nav';
+import { connect } from 'react-redux';
+
+import './App.scss';
+import Login from './components/Login';
+import Posts from './components/Posts';
+import OrgFeed from './components/OrgFeed';
+import Landing from './components/Landing';
+import Register from './components/Register';
+import OrgDetails from './components/OrgDetails';
+import PrivateRoute from './components/PrivateRoute';
+import { identifyViaToken } from './actions/Action';
 
 class App extends Component {
+  
+  componentDidMount() {
+    const token = localStorage.token || '';
+    
+    if(token) {
+      this.props.dispatch(identifyViaToken(token));
+    } else {
+      this.props.dispatch({ type: 'NO_TOKEN' });
+    }
+  }
+
   render() {
     return (
-
       <Router>
-      <div className="App">
-        <div className="heading__background--1">
-          <h1 className="heading__homepage--1">altify</h1>
-          <Nav/>
+        <div className="App">
+          <Switch>
+            <Route exact path="/" component={Landing}/> 
+            <Route path="/users/login" component={Login}/>
+            <Route exact path="/users/register" component={Register}/>
+            <PrivateRoute exact path="/posts" component={Posts}/>
+            <PrivateRoute exact path="/landing" component={Landing}/>
+            <PrivateRoute path="/users/org/:id/posts" component={OrgFeed}/>
+            <PrivateRoute exact path="/users/org/:id" component={OrgDetails}/>
+          </Switch>
         </div>
-        <div className="heading__background--2">
-          <h4 className="heading__homepage--2">
-          Keep track of your daily 
-          <span className="pencil">&#9998;</span>
-          <span className="update--text">Update</span>
-          </h4>
-        </div>
-        <Switch>
-          <Route exact path="/users/register" component={Register} />
-          <Route exact path="/users/login" component={Login} />
-        </Switch>
-      </div>
-    </Router>
+      </Router>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(App);

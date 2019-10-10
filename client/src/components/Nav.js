@@ -1,20 +1,52 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'; 
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Nav = () => {
-  return (
-    <div>
-      <ul className="main__nav">
-        <li className="main__navlist--item1">
-          <Link to="/users/login" className="nav__links">Login</Link>
-        </li>
-        <li className="main__navlist--item2">
-          <Link to="/users/register" className="nav__links">Register</Link>
-        </li>
-      </ul>
-    </div>
-  );
+class Nav extends React.Component {
+
+  handleClick = (e) => {
+    localStorage.clear();
+    window.location = "/";
+  }
+
+  render () {
+    const user = this.props.currentUser.user;
+
+      return (
+        <>
+          { user ?
+            <div>
+              <ul className="navbar">
+                <li className='navbar-start'>
+                  <Link to="/" ><p className='logo-name'>zEngage</p></Link>
+                </li>
+                <li className='navbar-end'>
+                  <p className='nav-username'>Hello! {user.name}</p>
+                  <a className="log-out-button" onClick={this.handleClick}>
+                    <i className="fas fa-sign-out-alt"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          :
+            <div>
+              <ul className="navbar is-danger">
+                <li className="navbar-item">
+                  {/* <Link to="/users/login" className="button">Login</Link>
+                  <Link to="/users/register" className="button bg-primary">Sign up</Link> */}
+                </li>
+              </ul>
+            </div>
+          }
+        </>
+      )
+  }
 };
 
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.currentUser
+  }
+}
 
-export default Nav;
+export default connect(mapStateToProps)(Nav);

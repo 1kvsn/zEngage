@@ -21,6 +21,9 @@ class Register extends Component {
 	}
 
 	componentDidMount = () => {
+		localStorage.getItem('token') ? 
+		window.location.href = '/landing' : null;
+
 		const {ref} = queryString.parse(location.search);
 		if(ref) {
 			this.setState({

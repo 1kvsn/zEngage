@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 
 import './App.scss';
+import Home from './components/Home';
 import Login from './components/Login';
 import Posts from './components/Posts';
 import OrgFeed from './components/OrgFeed';

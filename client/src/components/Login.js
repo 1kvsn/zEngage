@@ -5,19 +5,21 @@ import { loginAction } from '../actions/Action';
 
 
 class Login extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			email: '',
-			password: '',
-		}
+	state = {
+		email: '',
+		password: '',
 	}
 
 	handleSubmit = (e) => {
 		e.preventDefault();
+		// this.props.dispatch(loginAction(this.state, () => {
+		// 	localStorage.getItem('token') ? 
+		// 	this.props.history.push("/landing") : this.props.history.push('/users/login');
+		// })
+		// );
 		this.props.dispatch(loginAction(this.state, () => {
 			localStorage.getItem('token') ? 
-			this.props.history.push("/landing") : this.props.history.push('/users/login');
+			window.location.href = '/landing' : window.location.href = '/users/login';
 		})
 		);
 	}
@@ -27,6 +29,11 @@ class Login extends React.Component {
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
+	}
+
+	componentDidMount() {
+		localStorage.getItem('token') ? 
+		window.location.href = '/landing' : null;
 	}
 
 	render() {
@@ -50,13 +57,13 @@ class Login extends React.Component {
 							</div>
 						</div>
 					</div>
-					<form className="form column" onSubmit={(e) => this.handleSubmit(e)}>
+					<form className="form column" onSubmit={this.handleSubmit}>
 						<div className='column is-half is-vcentered'>
 
 							<div className="field">
 								<label className='label'>email</label>
 								<p className="control has-icons-left has-icons-right">
-									<input className='input' value={this.state.email} onChange={(e) => this.handleChange(e)} name='email' type='email' placeholder='e.g alexsmith@gmail.com' autoComplete='email'/>
+									<input className='input' value={this.state.email} onChange={this.handleChange} name='email' type='email' placeholder='e.g alexsmith@gmail.com' autoComplete='email'/>
 									<span className="icon is-small is-left">
 										<i className="fas fa-envelope"></i>
 									</span>
@@ -68,7 +75,7 @@ class Login extends React.Component {
 								
 							<div className="field">
 								<label className='label' >password</label>
-								<input className='input' value={this.state.password} onChange={(e) => this.handleChange(e)} name='password' type='password' autoComplete='current-password' />
+								<input className='input' value={this.state.password} onChange={this.handleChange} name='password' type='password' autoComplete='current-password' />
 							</div>
 							<button className="button bg-primary" type='submit'>Log in</button>
 							<div className='flex register-login-text'>Don't have account?

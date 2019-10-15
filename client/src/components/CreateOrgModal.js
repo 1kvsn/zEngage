@@ -6,12 +6,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { createOrganisation } from '../actions/Action';
 
 const initialState = {
+	selectedFile: null,
 	orgName: '',
 	location: ''
 }
 
 class CreateOrgModal extends React.Component {
 	state = initialState;
+
+	onChangeHandler = (e) => {
+		this.setState({
+			selectedFile: event.target.files[0]
+		});
+	}
 
 	changeValue = (e) => {
 		const key = e.target.name;
@@ -20,12 +27,12 @@ class CreateOrgModal extends React.Component {
 	}
 
 	onClickHandler = (e) => {
-		const { orgName, location, creator } = this.state;
+		const { selectedFile, orgName, location, creator } = this.state;
 		const { handleCreateOrgModal, createOrganisation } = this.props;
 		e.preventDefault();
 
 		const data = new FormData();
-		// data.append('file', selectedFile);
+		data.append('file', selectedFile);
 		data.append('name', orgName);
 		data.append('location', location);
 		data.append('creator', creator);
@@ -54,6 +61,20 @@ class CreateOrgModal extends React.Component {
 							</div>
 							<div className="fiv">
 								<input className='input' type="text" value={this.state.location} onChange={this.changeValue} name="location" placeholder='location' />
+							</div>
+							<div className="fiv">
+								<label htmlFor="upload-image">
+									<input
+										accept="image/*"
+										name="file"
+										type="file"
+										id="upload-image"
+										style={{ display: 'none' }}
+										onChange={this.onChangeHandler}
+									/>
+									<i className="fas fa-cloud-upload-alt"></i>
+									Select Image
+                </label>
 							</div>
 							<button type="submit" className="button bg-primary">Create</button>
 						</div>

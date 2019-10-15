@@ -85,27 +85,23 @@ body {
 
 .landing-container {
 	background-color: #e6ecf0;
-	max-width: 900px;
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
-	margin: 0 auto;
-	padding: 100px;
+	justify-content: center;
+	padding: 20px;
 	
 	
 	
 	.landing-form {
-		max-width: 400px;
 		width: 80%;
 		display: grid;
 		place-content: center;
-		padding: 25px;
-		border: 1px solid;
-		background-color: #fff;
 
 		.form-container {
-			max-width: 300px;
-			width: 100%;
+			
+			input {
+				margin: 5px;
+			}
 		}
 	}
 }

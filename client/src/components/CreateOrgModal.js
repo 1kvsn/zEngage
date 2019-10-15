@@ -32,7 +32,7 @@ class CreateOrgModal extends React.Component {
 		e.preventDefault();
 
 		const data = new FormData();
-		data.append('file', selectedFile);
+		// data.append('file', selectedFile);
 		data.append('name', orgName);
 		data.append('location', location);
 		data.append('creator', creator);
@@ -53,7 +53,6 @@ class CreateOrgModal extends React.Component {
 		return (
 			<Dialog onClose={this.handleCloseModal} aria-labelledby="simple-dialog-title" open={isCreateOrgModalOpen}>
 				<DialogTitle id="simple-dialog-title">Create Organisation</DialogTitle>
-				<div className="landing-container">
 					<form onSubmit={this.onClickHandler} encType="multipart/form-data" className="landing-form ">
 						<div className='form-container'>
 							<div className="fiv">
@@ -62,24 +61,9 @@ class CreateOrgModal extends React.Component {
 							<div className="fiv">
 								<input className='input' type="text" value={this.state.location} onChange={this.changeValue} name="location" placeholder='location' />
 							</div>
-							<div className="fiv">
-								<label htmlFor="upload-image">
-									<input
-										accept="image/*"
-										name="file"
-										type="file"
-										id="upload-image"
-										style={{ display: 'none' }}
-										onChange={this.onChangeHandler}
-									/>
-									<i className="fas fa-cloud-upload-alt"></i>
-									Select Image
-                </label>
-							</div>
-							<button type="submit" className="button bg-primary">Create</button>
 						</div>
+						<button type="submit" className="button bg-primary">Create</button>
 					</form>
-				</div>
 			</Dialog>
 		)
 	}

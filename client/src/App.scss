@@ -83,28 +83,26 @@ body {
 
 //Landing Styles
 
-.landing-container {
-	background-color: #e6ecf0;
-	width: 100%;
+.landing-form {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
 	padding: 20px;
-	
-	
-	
-	.landing-form {
-		width: 80%;
-		display: grid;
-		place-content: center;
+	background-color: #e6ecf0;
 
-		.form-container {
-			
-			input {
-				margin: 5px;
-			}
+	.form-container {
+		
+		button {
+			width: 50%;
+			align-self: flex-end;
+			margin-top: 5px;
+		}
+
+		input {
+			margin-top: 5px;
 		}
 	}
 }
+
 
 //Organization List Styles
 

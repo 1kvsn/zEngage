@@ -5,6 +5,8 @@ import Footer from './Footer';
 import CreateOrgModal from './CreateOrgModal';
 import OrganizationList from './OrganizationList';
 
+import Button from '@material-ui/core/Button';
+
 export default function Dashboard() {
 	
 	const [isCreateOrgModalOpen, setIsCreateOrgModalOpen] = React.useState(false);
@@ -16,7 +18,18 @@ export default function Dashboard() {
 	return (
 		<React.Fragment>
 			<Nav />
-			<button onClick={handleCreateOrgModal}>+</button>
+			<Button 
+				onClick={handleCreateOrgModal}
+				style={{
+					padding: '10px',
+					margin: '20px',
+					fontSize: '16px',
+					textTransform: 'capitalize',
+					backgroundColor: '#e6ecf0',
+					border: '1px solid'
+				}}
+			>Create Organisation
+			</Button>
 
 			{
 				isCreateOrgModalOpen && (

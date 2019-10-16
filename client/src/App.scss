@@ -106,38 +106,22 @@ body {
 
 //Organization List Styles
 
-.organization-list {
-	background-color: #fff;
-	max-width: 300px;
-	width: 80%;
-	
-
-}
-
 .org-list-container {
-	padding: 10px;
+	
+	.org-card-container {
+		display: grid;
+		grid-template-columns: repeat(4, 200px);
+		grid-gap: 10px;
+		padding: 10px;
+	}
 
 	h3 {
 		font-size: 16px;
 		font-weight: bold;
 	}
 
-	.icard {
-		width: 100px;
-		margin-top: 20px;
-		
-		.icard-image {
-			
-			.fa-users {
-				font-size: 20px;
-			}
-			div {
-				margin-left: 5px;
-			}
-		}
-	}
-
 }
+
 
 //Org Details page
 .notification-text {

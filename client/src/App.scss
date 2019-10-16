@@ -83,67 +83,45 @@ body {
 
 //Landing Styles
 
-.landing-container {
-	background-color: #e6ecf0;
-	max-width: 900px;
-	width: 100%;
+.landing-form {
 	display: flex;
-	justify-content: space-between;
-	margin: 0 auto;
-	padding: 100px;
-	
-	
-	
-	.landing-form {
-		max-width: 400px;
-		width: 80%;
-		display: grid;
-		place-content: center;
-		padding: 25px;
-		border: 1px solid;
-		background-color: #fff;
+	flex-direction: column;
+	padding: 20px;
+	background-color: #e6ecf0;
 
-		.form-container {
-			max-width: 300px;
-			width: 100%;
+	.form-container {
+		
+		button {
+			width: 50%;
+			align-self: flex-end;
+			margin-top: 5px;
+		}
+
+		input {
+			margin-top: 5px;
 		}
 	}
 }
 
+
 //Organization List Styles
 
-.organization-list {
-	background-color: #fff;
-	max-width: 300px;
-	width: 80%;
-	
-
-}
-
 .org-list-container {
-	padding: 10px;
+	
+	.org-card-container {
+		display: grid;
+		grid-template-columns: repeat(4, 200px);
+		grid-gap: 10px;
+		padding: 10px;
+	}
 
 	h3 {
 		font-size: 16px;
 		font-weight: bold;
 	}
 
-	.icard {
-		width: 100px;
-		margin-top: 20px;
-		
-		.icard-image {
-			
-			.fa-users {
-				font-size: 20px;
-			}
-			div {
-				margin-left: 5px;
-			}
-		}
-	}
-
 }
+
 
 //Org Details page
 .notification-text {

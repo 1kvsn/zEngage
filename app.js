@@ -20,7 +20,9 @@ mongoose.connect(
  "mongodb://127.0.0.1:27017/zEngage", {
    connectTimeoutMS: 1000 * 60 * 5,
    poolSize: 10,
-   family: 4
+   family: 4,
+   useFindAndModify: false,
+   useNewUrlParser: true,
  },
  function(err, connection) {
   console.timeEnd('start');

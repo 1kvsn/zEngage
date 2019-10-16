@@ -11,9 +11,9 @@ exports.createOrg = (req, res) => {
 	}
 
 	//file size check
-	if(req.file.size && req.file.size >= 10000000/2) {
-		return res.status(400).send({message: 'Image is mandatory. Image file size must be below 5MB'});
-	}
+	// if(req.file.size && req.file.size >= 10000000/2) {
+	// 	return res.status(400).send({message: 'Image is mandatory. Image file size must be below 5MB'});
+	// }
 
 	Org.findOne({ name: req.body.name })
 	.then(foundOrg => {
@@ -25,15 +25,15 @@ exports.createOrg = (req, res) => {
 			});
 		} else {
 			// console.log(req.file, 'Here in the else condition this is req.File')
-				const { filename } = req.file;
-				const iType = filename.split('.')[1];
+				// const { filename } = req.file;
+				// const iType = filename.split('.')[1];
 				var newOrg = {
 					name: req.body.name,
 					creator: req.user.userId,
-					imageUrl: {
-						name: filename,
-						imageType: `image/${iType}`
-					},
+					// imageUrl: {
+					// 	name: filename,
+					// 	imageType: `image/${iType}`
+					// },
 					location: req.body.location,
 					members: [req.user.userId]
 				}

@@ -26,4 +26,4 @@ yarn-error.log*
 redux.md
 
 server/public/uploads
-**/.vscode
+.vscode/

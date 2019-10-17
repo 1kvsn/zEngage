@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var commentSchema = new Schema({
-	post: {
+var replySchema = new Schema({
+	comment: {
 		type: Schema.Types.ObjectId,
-		ref: 'Post',
+		ref: 'Comment',
 	},
 	user: {
 		type: Schema.Types.ObjectId,
@@ -14,16 +14,12 @@ var commentSchema = new Schema({
 		type: String,
 		maxLength: 180,
 	},
-	replies: [{
+	comments: [{
 		type: Schema.Types.ObjectId,
-		ref: 'Reply',
-	}],
-	reply: {
-		type: Schema.Types.ObjectId,
-		ref: 'Reply',
-	}
+		ref: 'Comment',
+	}]
 }, {timestamps: true})
 
-var Comment = mongoose.model('Comment', commentSchema);
+var Reply = mongoose.model('Comment', replySchema);
 
-module.exports = Comment;
+module.exports = Reply;

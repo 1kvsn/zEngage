@@ -1,10 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import ComposeComment from './ComposeComment';
+
 
 class OrgFeed extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			isComposeCommentModalOpen: false,
+			selectedPost: null,
+		}
+	}
+
+	handleCommentModal = (post) => {
+		this.setState({
+			isComposeCommentModalOpen: !this.state.isComposeCommentModalOpen,
+			selectedPost: post,
+		 })
 	}
 	
 	render() {
@@ -14,7 +28,7 @@ class OrgFeed extends React.Component {
 					{
 						this.props.orgPosts && this.props.orgPosts.map(post => {
 							return (
-						<div className='org-feed-posts'>
+						<div className='org-feed-posts' key={post._id}>
 							<div className='post-container'>
 								<div className='post'>
 									<div className='post-head'>
@@ -34,13 +48,39 @@ class OrgFeed extends React.Component {
 											<a className="tag" >#{post.tag}</a>
 										</p>
 									</div>
+									<div className="post-base">
+										<div className="base-icon-wrap">
+											<span onClick={() => this.handleCommentModal(post)}>
+												<i className="far fa-comment-alt"></i>
+											</span>
+											<p>45</p>
+										</div>
+										<div className="base-icon-wrap">
+											<span>
+												<i className="far fa-heart"></i>
+											</span>
+											<p>815</p>
+										</div>
+										<span>
+											<i className="fas fa-sign-out-alt"></i>
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
 							)
-						})	
-					}	
+						})
+					}
 				</section>
+				{
+					this.state.isComposeCommentModalOpen && (
+						<ComposeComment
+							handleCommentModal={this.handleCommentModal}
+							isComposeCommentModalOpen={this.state.isComposeCommentModalOpen}
+							selectedPost={this.state.selectedPost}
+						/>
+					)
+				}
 			</>
 		)
 	}

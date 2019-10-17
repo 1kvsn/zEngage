@@ -82,7 +82,7 @@ exports.sendInvites = (req, res) => {
 		service: "Gmail",
 		auth: {
 			user: 'onlyjaxsonteller@gmail.com',
-			pass: 'jax@1212'
+			pass: 'teller@1212'
 		}
 	});
 	let rand, mailOptions, host, link;

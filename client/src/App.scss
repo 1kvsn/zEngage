@@ -307,7 +307,7 @@ body {
 		background-color: #fff;
 		
 		.post-container {
-			padding: 10px;
+			padding: 10px 10px 0px 10px;
 			
 			.post {
 			// sdlkjsljsf
@@ -355,7 +355,83 @@ body {
 						font-size: 14px;
 					}
 				}
+				.post-base {
+					display: flex;
+					justify-content: space-around;
+					margin-top: 10px;
+
+					.base-icon-wrap {
+						display: flex;
+						justify-content: center;
+						align-items: baseline;
+					}
+
+					span {
+						width: 40px;
+						padding: 8px 5px;
+						border-radius: 50%;
+						text-align: center;
+					}
+
+					span:hover {
+						background-color: rgb(189, 189, 189);
+						cursor: pointer;
+					}
+
+					p {
+						// margin-left: 5px;
+					}
+				}
 			}
 		}
 	}
+}
+
+//Comment Styles
+
+.comment-section {
+	display: grid;
+	grid-template-columns: 600px;
+
+	.post-reply {
+		display: flex;
+		align-items: 10px;
+		margin-top: 20px;
+	}
+
+	.fa-user-circle {
+		font-size: 40px;
+		color: lightgray;
+		
+	}
+
+	.comment {
+		// position: relative;
+	}
+
+	.post-text {
+		padding-left: 0;
+	}
+
+	.comment-bar {
+		width: 3px;
+		// height: 
+		background-color: rgb(204, 214, 221);
+	}
+
+	textarea {
+		font-size: 18px;
+		width: 100%;
+		resize: none;
+		outline: none;
+		border: none;
+		padding: 10px 5px 5px 5px;
+		overflow-y: hidden;
+	}
+
+	.reply-submit {
+		display: grid;
+		justify-content: right;
+	}
+	
 }

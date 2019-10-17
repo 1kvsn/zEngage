@@ -119,7 +119,6 @@ export function savePostsAction(data) {
 
 //get all Posts from an Organization
 export function getOrgFeed(orgId) {
-	console.log('this is in reducer', orgId);
 	return (dispatch) => {
 		fetch(`http://localhost:8000/api/v1/users/org/${orgId}/posts`, {
       method: "GET",
@@ -163,7 +162,6 @@ export function createOrganisation(data) {
 				'Authorization': "bearer " + localStorage.token
 			}
 		}).then(data => {
-			console.log(data, 'this is freaking data before GET_ORG_LIST_SUCCESS');
 			dispatch({
 				type: 'GET_ORGANISATIONS_LIST_SUCCESS',
 				data: data.data

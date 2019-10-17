@@ -15,7 +15,6 @@ function organisations (state = initialState, action) {
         details: action.data.organisation
       }
     case "GET_ORGANISATION_FEED": {
-      console.log(state, 'this is state', action, 'this is action');
       return {
         ...state,
         orgFeed: action.payload.orgPosts,

@@ -53,7 +53,7 @@ class OrgFeed extends React.Component {
 											<span onClick={() => this.handleCommentModal(post)}>
 												<i className="far fa-comment-alt"></i>
 											</span>
-											<p>45</p>
+											<p>{post.comments.length ? post.comments.length : null}</p>
 										</div>
 										<div className="base-icon-wrap">
 											<span>

@@ -3,11 +3,12 @@ const nodemailer = require('nodemailer');
 var Invite = require('../models/Invite');
 var Post = require('../models/Post');
 var User = require('../models/User');
+var Comment = require('../models/Comment');
 
 exports.createOrg = (req, res) => {
 	//name and location existence check
-	if(!req.body.name || !req.body.location) {
-		return res.status(400).send({ message: "Name, Location and Image are mandatory to create an Organisation."});
+	if (!req.body.name || !req.body.location) {
+		return res.status(400).send({ message: "Name, Location and Image are mandatory to create an Organisation." });
 	}
 
 	//file size check
@@ -16,15 +17,13 @@ exports.createOrg = (req, res) => {
 	// }
 
 	Org.findOne({ name: req.body.name })
-	.then(foundOrg => {
-		// console.log(foundOrg, 'This user already exists in DB.')
-		if (foundOrg) {
-			return res.status(409).json({
-				success: false,
-				message: 'Name taken. Please use another name.'
-			});
-		} else {
-			// console.log(req.file, 'Here in the else condition this is req.File')
+		.then(foundOrg => {
+			if (foundOrg) {
+				return res.status(409).json({
+					success: false,
+					message: 'Name taken. Please use another name.'
+				});
+			} else {
 				// const { filename } = req.file;
 				// const iType = filename.split('.')[1];
 				var newOrg = {
@@ -37,39 +36,38 @@ exports.createOrg = (req, res) => {
 					location: req.body.location,
 					members: [req.user.userId]
 				}
-				// console.log(newOrg, 'Printing the org information')
 				Org.create(newOrg, (err, createdOrg) => {
-					if(err) {
+					if (err) {
 						return res.status(500).json({
 							success: false,
 							err
 						});
 					} else {
-						User.findByIdAndUpdate(req.headers.userId, 
+						User.findByIdAndUpdate(req.headers.userId,
 							{
 								$push: {
 									createdOrganisations: createdOrg.id,
 									organisations: createdOrg.id
 								}
-							}, {new: true}, (err, updatedUser) => {
-									if(err) {
-										res.status(500).json({
-											success: false,
-											message: 'Encountered error while updating User.',
-											err
-										});
-									} else {
-										Org.find({members: req.user.userId})
+							}, { new: true }, (err, updatedUser) => {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: 'Encountered error while updating User.',
+										err
+									});
+								} else {
+									Org.find({ members: req.user.userId })
 										.then(foundOrgs => {
 											console.log(foundOrgs, 'All orgs user is part of');
-											if(foundOrgs) return res.status(200).json({
+											if (foundOrgs) return res.status(200).json({
 												success: true,
 												organisations: foundOrgs
 											})
 										})
-									}
+								}
 							})
-						}
+					}
 				});
 			}
 		});
@@ -99,28 +97,28 @@ exports.sendInvites = (req, res) => {
 	// it'll provide your localhost or network address
 	host = req.get("host");
 	let refCode;
-		refCode = randomN(6);
-		link = `http://${host}/users/register?ref=${refCode}`;
-		const {teammateEmail, org} = req.body;
+	refCode = randomN(6);
+	link = `http://${host}/users/register?ref=${refCode}`;
+	const { teammateEmail, org } = req.body;
 
-		//creating new Teammate
-		const newTeammate = {
-			teammateEmail: teammateEmail,
-			refCode: refCode,
-			org: org,
-		}
-		//Checking if the invited user is already a member of any existing Orgs
-		Invite.findOne({teammateEmail: teammateEmail})
+	//creating new Teammate
+	const newTeammate = {
+		teammateEmail: teammateEmail,
+		refCode: refCode,
+		org: org,
+	}
+	//Checking if the invited user is already a member of any existing Orgs
+	Invite.findOne({ teammateEmail: teammateEmail })
 		.then(teammate => {
-			if(teammate) {
+			if (teammate) {
 				console.log(teammate, 'this Teammate is already a part of one of existing Orgs');
 				//find the Teammate and update the Org here
-				Invite.findOneAndUpdate({teammateEmail: teammateEmail}, {org: org}, {new: true}, (err, updatedTeammate) => {
-					if(err) return res.status(500).json({
+				Invite.findOneAndUpdate({ teammateEmail: teammateEmail }, { org: org }, { new: true }, (err, updatedTeammate) => {
+					if (err) return res.status(500).json({
 						success: false,
 						message: 'Unable to update Org of existing Teammate'
 					});
-					if(updatedTeammate) return res.status(200).json({
+					if (updatedTeammate) return res.status(200).json({
 						success: true,
 						message: 'new Teammate validated and added to Org. Email authentication not required.',
 						updatedTeammate
@@ -128,13 +126,13 @@ exports.sendInvites = (req, res) => {
 				});
 			}
 			//if teammate does NOT exist in DB;
-			if(!teammate) {
+			if (!teammate) {
 				Invite.create(newTeammate, (err, invitedTeammate) => {
-					if(err) return res.status(500).json({
+					if (err) return res.status(500).json({
 						success: false,
 						message: 'Server error encountered while creating newTeammate.'
 					})
-					if(invitedTeammate) {
+					if (invitedTeammate) {
 						//send email for validation
 						mailOptions = {
 							to: teammateEmail,
@@ -145,32 +143,75 @@ exports.sendInvites = (req, res) => {
 							if (err) return res.status(406).json({ error: "Encountered a problem while sending the invitation email" });
 							return res.json({
 								success: true,
-								message: `Invitation email sent to ${mailOptions.to}`});
+								message: `Invitation email sent to ${mailOptions.to}`
+							});
 						});
 					}
 				});
 			}
-	});
+		});
 }
 
 exports.getOrgPosts = (req, res) => {
 	var orgId = req.params.id;
-	var userId = req.headers.userId;
-	Post.find({org: orgId}, null, {sort: {createdAt: -1}})
-	.populate('user', '-password')
-	.exec((err, orgPosts) => {
-		if(err) {
-			return res.status(500).json({
-			success: false,
-			err
-			});
-		} else {
-			return res.status(200).json({
-				success: true,
-				orgId: orgId,
-				orgPosts
-			});
-		}
-	});
+	// var userId = req.headers.userId;
+	Post.find({ org: orgId }, null, { sort: { createdAt: -1 } })
+		.populate('user', '-password')
+		.exec((err, orgPosts) => {
+			if (err) {
+				return res.status(500).json({
+					success: false,
+					err
+				});
+			} else {
+				return res.status(200).json({
+					success: true,
+					orgId: orgId,
+					orgPosts
+				});
+			}
+		});
 }
 
+exports.addComments = (req, res) => {
+	var newComment = {
+		post: req.body.postId,
+		user: req.headers.userId,
+		content: req.body.comment,
+	}
+	Comment.create(newComment, (err, comment) => {
+		if (err) {
+			return res.status(500).json({
+				success: false,
+				message: 'Unable to save comment'
+			});
+		} else {
+			Post.findByIdAndUpdate(req.body.postId, 
+				{ $push: { comments: comment._id } }, 
+				{ new: true }
+				)
+				.populate('user', '-password')
+				.exec((err, updatedPost) => {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: 'Encountered error while updating Post.',
+							err
+						});
+					} else {
+						Comment.find({ post: req.body.postId })
+							.then(comments => {
+								console.log(comments, 'are all comments for single post...');
+								if (comments) {
+									return res.status(200).json({
+										success: true,
+										comments: comments,
+										post: updatedPost
+									});
+								}
+							})
+					}
+				})
+		}
+	})
+}

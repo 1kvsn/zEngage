@@ -1,10 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import classes from './CommonStyles.module.scss';
 
+import { addComments } from '../actions/Action';
+
 class ComposeComment extends React.Component {
+
+	state = {
+		comment: "",
+	}
+
+	handleCommentContent = ({ target: { value } }) => {
+		this.setState({ comment: value })
+	}
+
+	handleSubmit = () => {
+		const { selectedPost, addComments, handleCommentModal } = this.props;
+
+		const payload = {};
+		payload.orgId = selectedPost.org;
+		payload.postId = selectedPost._id;
+		payload.comment = this.state.comment;
+
+		addComments(payload);
+		handleCommentModal();
+	}
 
 	render() {
 		const post = this.props.selectedPost;
@@ -38,12 +61,12 @@ class ComposeComment extends React.Component {
 
 									<div className='post-reply'>
 										<i className="fas fa-user-circle"></i>
-										<textarea rows={6} required maxLength="180" placeholder="Post your reply"></textarea>
+										<textarea autoFocus onChange={this.handleCommentContent} rows={6} required maxLength="180" placeholder="Post your reply"></textarea>
 									</div>
 								</div>
 
 								<div className="reply-submit">
-									<input onClick={''} className='button is-rounded bg-primary reply-btn' type='submit' value='Reply' />
+									<input onClick={this.handleSubmit} className='button is-rounded bg-primary reply-btn' type='submit' value='Reply' />
 								</div>
 							</div>
 						</div>
@@ -54,4 +77,4 @@ class ComposeComment extends React.Component {
 	}
 }
 
-export default ComposeComment;
+export default connect(null, { addComments })(ComposeComment);

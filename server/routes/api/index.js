@@ -55,4 +55,6 @@ router.get('/users/organisations', userController.verifyToken, userController.ge
 //get org details page
 router.get('/users/org/:id', userController.getOrganisationDetails);
 
+router.post('/users/org/:id/comments', userController.verifyToken, orgController.addComments)
+
 module.exports = router;

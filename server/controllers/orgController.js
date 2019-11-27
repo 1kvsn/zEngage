@@ -79,8 +79,8 @@ exports.sendInvites = (req, res) => {
 	const smtpTransport = nodemailer.createTransport({
 		service: "Gmail",
 		auth: {
-			user: 'onlyjaxsonteller@gmail.com',
-			pass: 'teller@1212'
+			user: process.env.EMAIL_ADDRESS,
+			pass: process.env.EMAIL_PASSWORD
 		}
 	});
 	let rand, mailOptions, host, link;

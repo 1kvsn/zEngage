@@ -14,14 +14,6 @@ var commentSchema = new Schema({
 		type: String,
 		maxLength: 180,
 	},
-	replies: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Reply',
-	}],
-	reply: {
-		type: Schema.Types.ObjectId,
-		ref: 'Reply',
-	}
 }, {timestamps: true})
 
 var Comment = mongoose.model('Comment', commentSchema);

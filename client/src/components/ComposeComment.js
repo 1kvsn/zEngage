@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import classes from './CommonStyles.module.scss';
 
 import { addComments } from '../actions/Action';
 
@@ -25,8 +23,10 @@ class ComposeComment extends React.Component {
 		payload.postId = selectedPost._id;
 		payload.comment = this.state.comment;
 
-		addComments(payload);
-		handleCommentModal();
+		if (payload.comment) {
+			addComments(payload);
+			handleCommentModal();
+		}
 	}
 
 	render() {
@@ -51,7 +51,7 @@ class ComposeComment extends React.Component {
 
 
 									<div className='post-text'>
-										<span className="comment-bar"/>
+										<span className="comment-bar" />
 										<p className='post-text-one'>{post.didToday}{post.learnedToday}</p>
 										<a className="tag" >#{post.tag}</a>
 										<div>

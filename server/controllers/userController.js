@@ -35,7 +35,7 @@ exports.loginUser = (req, res, next) => {
 			}
 			);
 
-			console.log(token, 'login success');
+			// console.log(token, 'login success');
 			// res.setHeader("token", token);
 			return res.status(200).json({
 				message: 'Auth successfull',

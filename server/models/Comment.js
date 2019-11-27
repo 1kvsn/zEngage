@@ -10,12 +10,12 @@ var commentSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 	},
-	comment: {
+	content: {
 		type: String,
 		maxLength: 180,
-	}
+	},
 }, {timestamps: true})
 
-var Comment = mongoose.model('Comment', postSchema);
+var Comment = mongoose.model('Comment', commentSchema);
 
 module.exports = Comment;

@@ -1,4 +1,4 @@
-## Project zEngage
+## Project zEngage (pronounced 'zengage')
 
 Engage with people in your organisation with zEngage!
 

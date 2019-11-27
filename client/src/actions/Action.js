@@ -64,7 +64,6 @@ export function loginAction(data, check) {
 }
 
 export function getOrganisationsList() {
-	// console.log("called in action getOrgList");
 	return (dispatch) => {
 		fetch(`${API}/users/organisations`, {
       method: "GET",
@@ -73,7 +72,6 @@ export function getOrganisationsList() {
 			}})
 		.then(res => res.json())
 		.then(data =>	{
-			// console.log(data, 'THIS IS GET_ORGANISATIONS_LIST_SUCCESS');
 			dispatch({
 				type: "GET_ORGANISATIONS_LIST_SUCCESS",
 				data
@@ -102,24 +100,8 @@ export function savePostsAction(data) {
 	}
 }
 
-// export function getUserPosts() {
-// 	return dispatch => {
-// 		// console.log('this is before fetch user posts');
-// 		fetch(`http://localhost:8000/api/v1/users/${userId}/posts`)
-// 		.then(res => res.json())
-// 		.then(data => {
-// 			// console.log(data, 'thisdispatched in getUserPosts');
-// 			dispatch({
-// 				type: "GET_USER_POSTS",
-// 				payload: data
-// 			})
-// 		})
-// 	}
-// }
-
 //get all Posts from an Organization
 export function getOrgFeed(orgId) {
-	console.log('this is in reducer', orgId);
 	return (dispatch) => {
 		fetch(`http://localhost:8000/api/v1/users/org/${orgId}/posts`, {
       method: "GET",
@@ -129,7 +111,6 @@ export function getOrgFeed(orgId) {
 			}})
 		.then(res => res.json())
 		.then(data => {
-			console.log('This is getOrgFEED from reducer', data);
 			dispatch({
 				type: "GET_ORGANISATION_FEED",
 				payload: data
@@ -163,7 +144,6 @@ export function createOrganisation(data) {
 				'Authorization': "bearer " + localStorage.token
 			}
 		}).then(data => {
-			console.log(data, 'this is freaking data before GET_ORG_LIST_SUCCESS');
 			dispatch({
 				type: 'GET_ORGANISATIONS_LIST_SUCCESS',
 				data: data.data
@@ -171,3 +151,44 @@ export function createOrganisation(data) {
 		});
 	}
 }
+
+export function addComments(payload) {
+	const { orgId } = payload;
+	return (dispatch, getState) => {
+		// console.log(getState(), 'this is getState.....')
+		axios.post(`${API}/users/org/${orgId}/comments`, payload, {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': "bearer " + localStorage.token
+			}
+		}).then(data => {
+			dispatch({
+				type: 'ADD_COMMENTS',
+				payload: data.data
+			})
+		})
+	}
+}
+
+
+
+// export const editAss = payload => async (dispatch, getState) => {
+//   try {
+//     const response = await axiosInstance.put(
+//       `/projects/${payload.projectId}/ass/${payload}
+//       }`,
+//       payload.formData
+//     );
+//     if (response.status === 200) {
+//       dispatch({
+//         type: EDIT_TYPE,
+//         payload: {
+//           assepe: res.data
+//         }
+//       });
+//       dispatch(orderCategories());
+//     }
+//   } catch (e) {
+//     console.error(e);
+//   }
+// };

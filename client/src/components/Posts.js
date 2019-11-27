@@ -51,7 +51,6 @@ class Posts extends React.Component {
 			this.props.dispatch(savePostsAction(this.state));
 			this.setState(initialState);
 			isPostSuccess = !isPostSuccess;
-			console.log('this is orgId', this.props.data._id);
 			this.props.dispatch(getOrgFeed(this.props.data._id));
 		}
 	}
@@ -97,34 +96,7 @@ class Posts extends React.Component {
 						</div>
 						<input onClick={this.handleSubmit} className='button is-rounded bg-primary' type='submit' value='Post' />
 					</div>
-					{
-						isPostSuccess ? <p className="notification-text">Post successfull !</p> : null
-					}
 				</div>
-			{/* User Posts Section */}
-			{/* <section className='columns is-centered'>
-				<div className='column is-4'>
-					<div className='post-container'>
-						{
-							userPosts.map(post => {
-								return (
-									<div className='post'>
-										<div className='post-time'>
-											<p>{new Date(post.createdAt).toLocaleTimeString()}</p>
-											<p>on {new Date(post.createdAt).toDateString()}</p>
-										</div>
-										
-										<p></p>
-										<p>{post.didToday}</p>
-										<p>{post.learnedToday}</p>
-
-									</div>
-								)
-							})	
-						}	
-					</div>
-				</div>
-			</section> */}
 			</>
 		)
 	}

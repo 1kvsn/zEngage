@@ -22,7 +22,11 @@ var postSchema = new Schema({
 	},
 	tag: {
 		type: String,
-	}
+	},
+	comments: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Comment',
+	}]
 }, {timestamps: true})
 
 var Post = mongoose.model('Post', postSchema);

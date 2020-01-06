@@ -1,5 +1,7 @@
 ## Project zEngage (pronounced 'zengage')
 
+* This is WIP *
+
 Engage with people in your organisation with zEngage!
 
 This is a fullstack project built using React-Redux for frontend, Express.js for server and Mongoose.js, MongoDB for database.

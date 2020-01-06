@@ -56,7 +56,7 @@ class CreateOrgModal extends React.Component {
 					<form onSubmit={this.onClickHandler} encType="multipart/form-data" className="landing-form ">
 						<div className='form-container'>
 							<div className="fiv">
-								<input className='input' type="text" value={this.state.orgName} onChange={this.changeValue} name="orgName" placeholder='org name' />
+								<input autoFocus className='input' type="text" value={this.state.orgName} onChange={this.changeValue} name="orgName" placeholder='org name' />
 							</div>
 							<div className="fiv">
 								<input className='input' type="text" value={this.state.location} onChange={this.changeValue} name="location" placeholder='location' />

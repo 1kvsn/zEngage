@@ -30,7 +30,7 @@ class OrganizationList extends Component {
             {
               orgList && orgList.map((elm, i) => {
                 return (
-                  <Card className="orgCard">
+                  <Card className="orgCard" key={i}>
                     <CardActionArea>
                       <CardContent style={{ padding: '5px', textAlign: 'center' }}>
                         <Typography gutterBottom variant="h5" component="h2">

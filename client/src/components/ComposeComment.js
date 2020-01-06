@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Dialog from '@material-ui/core/Dialog';
-
 import { addComments } from '../actions/Action';
 
 class ComposeComment extends React.Component {
@@ -12,7 +11,7 @@ class ComposeComment extends React.Component {
 	}
 
 	handleCommentContent = ({ target: { value } }) => {
-		this.setState({ comment: value })
+		this.setState({ comment: value });
 	}
 
 	handleSubmit = () => {

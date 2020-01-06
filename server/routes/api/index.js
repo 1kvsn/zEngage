@@ -57,4 +57,6 @@ router.get('/users/org/:id', userController.getOrganisationDetails);
 
 router.post('/users/org/:id/comments', userController.verifyToken, orgController.addComments)
 
+router.post('/users/org/:id/likes', userController.verifyToken, orgController.addLike)
+
 module.exports = router;

@@ -31,6 +31,9 @@ function organisations(state = initialState, action) {
         ]
       }
 
+    case 'ADD_LIKE':
+      
+
     default:
       return state;
   }

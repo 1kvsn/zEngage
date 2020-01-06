@@ -1,7 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import ComposeComment from './ComposeComment';
+import { addLike } from '../actions/Action';
 
 
 class OrgFeed extends React.Component {
@@ -18,9 +19,19 @@ class OrgFeed extends React.Component {
 		this.setState({
 			isComposeCommentModalOpen: !this.state.isComposeCommentModalOpen,
 			selectedPost: post,
-		 })
+		})
 	}
-	
+
+	handleLike = (post) => {
+		console.log(post);
+
+		const payload = {};
+		payload.orgId = this.props.orgId;
+		payload.postId = post._id;
+
+		this.props.addLike(payload);
+	}
+
 	render() {
 		return (
 			<>
@@ -28,46 +39,46 @@ class OrgFeed extends React.Component {
 					{
 						this.props.orgPosts && this.props.orgPosts.map(post => {
 							return (
-						<div className='org-feed-posts' key={post._id}>
-							<div className='post-container'>
-								<div className='post'>
-									<div className='post-head'>
-										<span>
-											<i className="fas fa-user-circle"></i>
-											<p className='post-username'>{post.user.name}</p>
-										</span>
-										<div className='post-time'>
-											<p>{new Date(post.createdAt).toLocaleTimeString()}</p>
-											<p>{new Date(post.createdAt).toLocaleDateString()}</p>
+								<div className='org-feed-posts' key={post._id}>
+									<div className='post-container'>
+										<div className='post'>
+											<div className='post-head'>
+												<span>
+													<i className="fas fa-user-circle"></i>
+													<p className='post-username'>{post.user.name}</p>
+												</span>
+												<div className='post-time'>
+													<p>{new Date(post.createdAt).toLocaleTimeString()}</p>
+													<p>{new Date(post.createdAt).toLocaleDateString()}</p>
+												</div>
+											</div>
+											<div className='post-text'>
+												<p className='post-text-one'>{post.didToday}</p>
+												<p className='post-text-two'>
+													{post.learnedToday}
+													<a className="tag" >#{post.tag}</a>
+												</p>
+											</div>
+											<div className="post-base">
+												<div className="base-icon-wrap">
+													<span onClick={() => this.handleCommentModal(post)}>
+														<i className="far fa-comment-alt"></i>
+													</span>
+													<p>{post.comments.length ? post.comments.length : null}</p>
+												</div>
+												<div className="base-icon-wrap">
+													<span onClick={() => this.handleLike(post)}>
+														<i className="far fa-heart"></i>
+													</span>
+													<p>{post.likes}</p>
+												</div>
+												<span>
+													<i className="fas fa-sign-out-alt"></i>
+												</span>
+											</div>
 										</div>
-									</div>
-									<div className='post-text'>
-										<p className='post-text-one'>{post.didToday}</p>
-										<p className='post-text-two'>
-											{post.learnedToday}
-											<a className="tag" >#{post.tag}</a>
-										</p>
-									</div>
-									<div className="post-base">
-										<div className="base-icon-wrap">
-											<span onClick={() => this.handleCommentModal(post)}>
-												<i className="far fa-comment-alt"></i>
-											</span>
-											<p>{post.comments.length ? post.comments.length : null}</p>
-										</div>
-										<div className="base-icon-wrap">
-											<span>
-												<i className="far fa-heart"></i>
-											</span>
-											<p>815</p>
-										</div>
-										<span>
-											<i className="fas fa-sign-out-alt"></i>
-										</span>
 									</div>
 								</div>
-							</div>
-						</div>
 							)
 						})
 					}
@@ -93,4 +104,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps)(OrgFeed);
+export default connect(mapStateToProps, { addLike })(OrgFeed);

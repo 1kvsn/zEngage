@@ -4,11 +4,13 @@ var Invite = require('../models/Invite');
 var Post = require('../models/Post');
 var User = require('../models/User');
 var Comment = require('../models/Comment');
+var Like = require('../models/Like');
+
 
 exports.createOrg = (req, res) => {
 	//name and location existence check
 	if (!req.body.name || !req.body.location) {
-		return res.status(400).send({ message: "Name, Location and Image are mandatory to create an Organisation." });
+		return res.status(400).send({ message: "Name and Location are mandatory to create an Organisation." });
 	}
 
 	//file size check
@@ -186,10 +188,10 @@ exports.addComments = (req, res) => {
 				message: 'Unable to save comment'
 			});
 		} else {
-			Post.findByIdAndUpdate(req.body.postId, 
-				{ $push: { comments: comment._id } }, 
+			Post.findByIdAndUpdate(req.body.postId,
+				{ $push: { comments: comment._id } },
 				{ new: true }
-				)
+			)
 				.populate('user', '-password')
 				.exec((err, updatedPost) => {
 					if (err) {
@@ -215,3 +217,109 @@ exports.addComments = (req, res) => {
 		}
 	})
 }
+
+exports.addLike = (req, res) => {
+	// console.log(req.user);
+	Like.find({ post: req.body.postId, user: req.user.userId }).then(like => {
+		if (like.length) {
+			console.log(like, 'found like');
+			//delete Like record
+			Like.findOneAndRemove({ _id: like._id }, (err, removedLike) => {
+				if (err) {
+					return res.status(500).json({
+						success: false,
+						message: 'Unable to remove like',
+						err
+					})
+				} else {
+					//and remove user from.Likes array in Post model
+					Post.findByIdAndUpdate(req.body.postId, {
+						$pull: { likes: like.user }
+					}, { new: true }).exec((err, updatedPost) => {
+						if (err) {
+							return res.status(500).json({
+								success: false,
+								message: 'Unable to remove likes from Post',
+								err
+							})
+						} else {
+							console.log(updatedPost, 'updatedPOst after removing like');
+							return res.status(200).json({
+								success: true,
+								message: 'like removed',
+								post: updatedPost
+							})
+						}
+					})
+				}
+			})
+		} else {
+			console.log('no like found....creating new like');
+			var newLike = {
+				post: req.body.postId,
+				user: req.user.userId,
+				count: 1
+			}
+			Like.create(newLike, (err, like) => {
+				if (err) {
+					return res.status(500).json({
+						success: false,
+						message: 'Unable to save like'
+					});
+				} else {
+					// Add user in Likes array in Post
+					Post.findByIdAndUpdate(like.post, {
+						$push: { likes: like.user }
+					}, { new: true }).exec((err, updatedPost) => {
+						if (err) {
+							return res.status(500).json({
+								success: false,
+								message: 'Unable to update Likes in Post',
+								err
+							})
+						} else {
+							return res.status(200).json({
+								success: true,
+								message: 'like added',
+								post: updatedPost
+							})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
+// Post.findByIdAndUpdate(req.body.postId, {
+// 	$inc: { likes: -1 }
+// }).exec((err, updatedPost) => {
+// 	if(err) {
+// 		return res.status(500).json({
+// 			success: false,
+// 			message: 'Unable to remove like from Post'
+// 		})
+// 	} else {
+// 		return res.status(200).json({
+// 			success: true,
+// 			message: 'like removed'
+// 		})
+// 	}
+// })
+
+// Post.findByIdAndUpdate(like.post, {
+// 	$inc: { likes: 1 }
+// }).exec((err, updatedPost) => {
+// 	if (err) {
+// 		return res.status(500).json({
+// 			success: false,
+// 			message: 'Unable to update Likes in Post',
+// 			err
+// 		})
+// 	} else {
+// 		return res.status(200).json({
+// 			success: true,
+// 			message: 'like added',
+// 		})
+// 	}
+// })
